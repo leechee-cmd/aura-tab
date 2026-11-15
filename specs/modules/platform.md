@@ -8,36 +8,29 @@ parent: aura-architecture
 
 # 平台抽象层
 
-## 职责
+## 这里有什么
 
-浏览器能力与跨模块公共设施的唯一定义处。业务模块不直接操作 `chrome.*` 的存储、消息、窗口交互。
+浏览器能力的唯一封装处，加跨模块公用设施。业务模块不直接操作存储、消息、窗口交互。
 
-只列看不出用途的部分：
+各自的作用大多看名字就懂，看不出的是**分工规矩**：
 
-| 部分 | 作用 |
+| 部分 | 规矩 |
 |---|---|
-| `settings-contract` | 全局默认值表 `SYNC_SETTINGS_DEFAULTS` + `getSyncSettings`：任何读取都必须带默认值，避免 `undefined` 漏进业务 |
-| `settings-repo` | 唯一的写入通道：`navigator.locks` 的 `aura-tab:settings` 排他锁 + 进程内队列，读-改-写不互相覆盖 |
-| `lifecycle` | 可销毁组件基类、拖拽状态机、定时器/事件/异步任务管理器 |
-| `modal-layer` | 多模态层级：谁在最上层、点外面算不算关闭、`Esc` 交给谁 |
-| `mac-window-base` / `window-interaction` | 页内伪桌面窗口：拖动、缩放、最小化、全屏、位置钳制 |
-| `shortcut-manager` | 快捷键的规范化、跨平台（Mac 的 Mod 映射）、匹配与展示 |
-| `i18n` | `scripts/platform/locales/` 下的三套文案 + `data-i18n` 回填 + 语言切换事件 |
-| `icon-cache` | IDB 图标缓存（`aura-tab-icon-cache`），带订阅同步与清理 |
-| `icon-fetch-bridge` / `favicon-offscreen` | 页面与 Service Worker 之间的图标抓取协议两侧实现 |
-| `backup-manager` | zip 打包与还原：sync/local、五个 IndexedDB 库、暂存库校验后切换 |
-| `toolbar-icon-service` / `toolbar-icon-renderer` | 自定义工具栏图标的**遗留**逻辑，现在只用于从旧备份还原（该功能已在 3.5.3 移除） |
-| `shared/webdav-client` | WebDAV 的 PROPFIND/PUT/GET，给备份用 |
+| 设置读取（`settings-contract`） | 唯一入口。任何读取都带默认值，避免 `undefined` 漏进业务 |
+| 设置写入（`settings-repo`） | 唯一入口。读-改-写在命名锁上串行，不互相覆盖 |
+| 模态层（`modal-layer`） | 决定按 `Esc` 归谁、点外面算不算关闭、谁在最上层 |
+| 页内窗口（`mac-window-base`） | 拖动、缩放、最小化、位置钳制；各窗口只覆写样式钩子 |
+| 图标抓取桥（`icon-fetch-bridge`） | 页面侧的协议一端；另一端在后台服务与隐藏页面 |
+| 备份（`backup-manager`） | 打包与还原；还原先写暂存库，校验通过才切换 |
+| 工具栏图标（`toolbar-icon-*`） | **遗留代码**：功能已移除，只用于从旧备份还原 |
 
-## 边界
+## 动这里会连带影响谁
 
-- 只向下依赖 `shared/` 与 `libs/`。唯一的例外是引用壁纸模块的默认值表（见 [aura-architecture](../architecture.md)）。
-- 不包含业务判断：什么该刷新、什么该存、文案说什么，属于各 domain。
+几乎全部业务模块。改设置契约的默认值、改锁名、改图标协议，都要顺着看调用方。
 
-## 不变量
+## 不能违反的
 
-- 设置只有两个写入口（`patchSyncSettings` / `patchBackgroundSettings`），且都在锁上串行。
-- 所有读写存储的并发点都用 `navigator.locks` 的命名锁：`aura-tab:settings`（设置）、`aura-tab:store`（快速链接）、`aura-tab:library` 与 `aura-tab:library-download`（壁纸收藏库）、`aura-tab:local-files`（本地壁纸），不用内存标志位代替。
-- `_locales/` 只保留 manifest 需要的键；界面文案只放 `scripts/platform/locales/`。
-- 备份带 `schemaVersion`，还原时先写 `aura-tab-restore-staging`，校验通过再替换正式库。
-- 所有组件实现 `destroy()`，销毁后不再持有定时器、监听器或 object URL。
+- 并发写存储必须用命名锁，不用内存标志位代替。
+- 界面文案只在 `scripts/platform/locales/`；`_locales/` 只保留 manifest 需要的键。
+- 备份带格式版本号；还原先写暂存库，校验通过再替换正式库。
+- 组件都要能销毁，且销毁后不再持有定时器、监听器或图片 URL。
