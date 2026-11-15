@@ -48,7 +48,9 @@ parent: aura-goal
 | IndexedDB | 图片、图标的二进制 | `chrome.storage` 放不下大对象 |
 | Cache Storage | 壁纸图片缓存 | 交给浏览器按容量淘汰 |
 
-## 不能违反的
+## 改坏会出事的
+
+这些条目描述代码现在的行为，不是覆盖率清单——哪条被测试守着，以 `tests/` 为准。
 
 - **设置只有两个写入口**（普通设置、壁纸设置各一个），全部在同一把命名锁上串行。绕过入口改 `chrome.storage` 就等于绕过锁，两个窗口同时改会互相覆盖。
 - **大对象不进 `chrome.storage`**；图片、二进制只进 IndexedDB 或 Cache Storage。

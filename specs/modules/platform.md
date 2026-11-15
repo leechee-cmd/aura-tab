@@ -28,7 +28,7 @@ parent: aura-architecture
 
 几乎全部业务模块。改设置契约的默认值、改锁名、改图标协议，都要顺着看调用方。
 
-## 不能违反的
+## 改坏会出事的
 
 - 并发写存储必须用命名锁，不用内存标志位代替。
 - 界面文案只在 `scripts/platform/locales/`；`_locales/` 只保留 manifest 需要的键。
