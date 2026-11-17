@@ -1,8 +1,64 @@
+/**
+ * First paint: the inline boot script that decides what the first frame looks like, and the
+ * main entry's arm/disarm timing around it.
+ *
+ * The nine module fakes below belong to the disarm-timing case (it imports `scripts/main.js`,
+ * which pulls all of them in). They are file-wide, so `scripts/platform/i18n.js` is also faked
+ * while the boot-script cases run — it keeps `t` distinct so `backgrounds/image-pipeline.js`,
+ * which translates its own error notices, still resolves its import.
+ *
+ * Sources merged here (git history of the individual files is gone, this list is the
+ * replacement for `git log --follow`):
+ *   tests/shell/first-paint.test.js
+ *   tests/shell/main-first-paint-disarm.test.js
+ */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { backgroundApplyMethods } from '../../scripts/domains/backgrounds/image-pipeline.js';
 
+vi.mock('../../scripts/domains/backgrounds/controller.js', () => ({
+    backgroundSystem: {},
+    initBackgroundSystem: vi.fn(async () => {})
+}));
+
+vi.mock('../../scripts/domains/layout.js', () => ({
+    initLayout: vi.fn()
+}));
+
+vi.mock('../../scripts/domains/clock.js', () => ({
+    initClock: vi.fn()
+}));
+
+vi.mock('../../scripts/domains/search.js', () => ({
+    initSearch: vi.fn()
+}));
+
+vi.mock('../../scripts/domains/quicklinks/index.js', () => ({
+    initQuickLinks: vi.fn(async () => {})
+}));
+
+vi.mock('../../scripts/platform/i18n.js', () => ({
+    initHtmlI18n: vi.fn(),
+    initLanguage: vi.fn(async () => {}),
+    t: (key) => key
+}));
+
+vi.mock('../../scripts/domains/settings/window.js', () => ({
+    initMacSettings: vi.fn(() => ({ toggle: vi.fn() }))
+}));
+
+vi.mock('../../scripts/domains/backgrounds/library-store.js', () => ({
+    libraryStore: {
+        init: vi.fn(async () => {})
+    }
+}));
+
+vi.mock('../../scripts/domains/changelog/index.js', () => ({
+    initChangelog: vi.fn(async () => {})
+}));
+
+// ===== from tests/shell/first-paint.test.js =====
 async function loadFirstPaintScript() {
     vi.resetModules();
     delete globalThis.__AURA_FIRST_PAINT__;
@@ -309,5 +365,61 @@ describe('newtab first paint markup', () => {
         const bodyTag = html.match(/<body\b[^>]*>/i)?.[0] ?? '';
 
         expect(bodyTag).not.toMatch(/\bstyle\s*=\s*["'][^"']*\bbackground(?:-color)?\s*:/i);
+    });
+});
+
+// ===== from tests/shell/main-first-paint-disarm.test.js =====
+describe('main first paint disarm timing', () => {
+    let originalRaf;
+    let rafQueue;
+
+    const flushRafFrame = () => {
+        const frameQueue = [...rafQueue];
+        rafQueue.length = 0;
+        frameQueue.forEach((cb) => cb(0));
+    };
+
+    beforeEach(() => {
+        vi.resetModules();
+        vi.useFakeTimers();
+        rafQueue = [];
+        originalRaf = globalThis.requestAnimationFrame;
+        globalThis.requestAnimationFrame = vi.fn((cb) => {
+            rafQueue.push(cb);
+            return rafQueue.length;
+        });
+
+        globalThis.__AURA_FIRST_PAINT__ = {
+            armFirstPaint: vi.fn(),
+            disarmFirstPaint: vi.fn()
+        };
+    });
+
+    afterEach(() => {
+        delete globalThis.__AURA_FIRST_PAINT__;
+        if (originalRaf) {
+            globalThis.requestAnimationFrame = originalRaf;
+        } else {
+            delete globalThis.requestAnimationFrame;
+        }
+        vi.useRealTimers();
+        vi.clearAllMocks();
+    });
+
+    it('should disarm only after one rendered frame following background apply', async () => {
+        await import('../../scripts/main.js');
+        await Promise.resolve();
+
+        const api = globalThis.__AURA_FIRST_PAINT__;
+        expect(api.armFirstPaint).toHaveBeenCalledTimes(1);
+
+        window.dispatchEvent(new CustomEvent('background:applied'));
+        expect(api.disarmFirstPaint).not.toHaveBeenCalled();
+
+        flushRafFrame();
+        expect(api.disarmFirstPaint).not.toHaveBeenCalled();
+
+        flushRafFrame();
+        expect(api.disarmFirstPaint).toHaveBeenCalledTimes(1);
     });
 });
