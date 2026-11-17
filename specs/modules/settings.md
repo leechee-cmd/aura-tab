@@ -37,7 +37,7 @@ depends-on: [aura-platform, aura-quicklinks, aura-changelog]
 
 界面 / 搜索 / 启动台。`角落按钮显示` 与 `搜索行为` 各是一行 chips，行名就是这一组开关在管什么：前者三个按钮都在角落里，后者三个开关都在管搜索；启动台的列与行合成一行「布局密度」。行名不能省——省掉之后一行胶囊左边空出一大片，看起来像坏了。分组只改呈现，存储键一个都没动。
 
-缺键不会报错：`t(key)` 把 key 原样返回，界面就会出现 `settingsLaunchpadGridSize` 这样的字。`tests/locales.test.js` 守着三语键集一致，且通用页用到的每个键都有文案。
+缺键不会报错：`t(key)` 把 key 原样返回，界面就会出现 `settingsLaunchpadGridSize` 这样的字。`tests/settings/locales.test.js` 守着三语键集一致，且通用页用到的每个键都有文案。
 
 ## 动这里会连带影响谁
 
