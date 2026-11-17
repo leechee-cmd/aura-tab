@@ -18,7 +18,10 @@ async function listFilesRecursively(rootDir) {
         for (const entry of entries) {
             const fullPath = path.join(current, entry.name);
             if (entry.isDirectory()) {
-                if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'coverage' || entry.name === 'dist') {
+                // Hidden directories too: .git is not source, and neither is local scratch
+                // like .thinkrail, which can hold a 20MB browser profile and made this
+                // whole-tree read slow enough to time out on a busy machine.
+                if (entry.name.startsWith('.') || entry.name === 'node_modules' || entry.name === 'coverage' || entry.name === 'dist') {
                     continue;
                 }
                 stack.push(fullPath);
