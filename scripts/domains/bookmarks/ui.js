@@ -5,6 +5,7 @@ import { modalLayer } from '../../platform/modal-layer.js';
 import { toast } from '../../shared/toast.js';
 import { t } from '../../platform/i18n.js';
 import { escapeHtml } from '../../shared/text.js';
+import { enhanceSelects, closeSelectMenu } from '../../shared/select-menu.js';
 
 const MODAL_ID = 'bookmark-import-modal';
 
@@ -133,6 +134,9 @@ class BookmarkImportUI {
         }
 
         this._validationResults = null;
+
+        // The popup is portalled to document.body, so it does not go with the modal.
+        closeSelectMenu();
 
         if (this._modalEl) {
             this._modalEl.remove();
@@ -311,6 +315,10 @@ class BookmarkImportUI {
             this._smartCompact = e.target.value === 'smart';
             this._updatePreview();
         });
+
+        // This sheet is dark glass whatever the page theme is, so the popup is forced dark.
+        const importMode = content.querySelector('#import-mode-select');
+        if (importMode) enhanceSelects(importMode, { tone: 'dark' });
 
         this._updatePreview();
     }

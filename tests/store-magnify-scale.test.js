@@ -24,6 +24,14 @@ function seedMinimalV4() {
 }
 
 describe('Store magnify scale settings', () => {
+    it('rests at 20 for a fresh install, so the dock does not burst open by default', async () => {
+        seedMinimalV4();
+        const store = await freshStore();
+        await store.init();
+        expect(store.settings.magnifyScale).toBe(20);
+        store.destroy?.();
+    });
+
     it('storage onChanged should update magnifyScale and emit settingsChanged', async () => {
         seedMinimalV4();
         const store = await freshStore();

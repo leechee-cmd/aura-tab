@@ -55,7 +55,7 @@ function keysUsedByGeneralPage() {
         add(section.titleKey, section.noteKey);
         for (const row of section.rows || []) {
             add(row.labelKey, row.descKey);
-            for (const item of row.items || []) add(item.chipLabelKey, item.labelKey, item.descKey);
+            for (const item of row.items || []) add(item.chipLabelKey, item.labelKey, item.descKey, item.hintKey);
             for (const option of row.options || []) add(option.labelKey);
         }
     }

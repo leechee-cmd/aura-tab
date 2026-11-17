@@ -181,6 +181,51 @@ export function createStepperRow({ prefix, labelKey, storageKey, min, max }) {
   };
 }
 
+/**
+ * One row holding several steppers, each with a short label in front of it.
+ * Used by 启动台 › 布局密度, where "columns" and "rows" are the same decision and
+ * two full rows would say it twice.
+ */
+export function createStepperGroupRow({ labelKey, steppers }) {
+  const configs = steppers.map((stepper) => ({
+    ...stepper,
+    defaultValue: DEFAULTS[stepper.storageKey],
+  }));
+
+  return {
+    type: "custom",
+    labelKey,
+    controlHtml: configs
+      .map(
+        (config) =>
+          `<span class="mac-stepper-group-item"><span class="mac-stepper-group-label">${t(config.labelKey)}</span>${renderStepperControl(config.prefix, config.defaultValue)}</span>`,
+      )
+      .join(""),
+    bind: ({ builder }) => {
+      for (const config of configs) {
+        bindStepperEvents(builder, {
+          prefix: config.prefix,
+          storageKey: config.storageKey,
+          min: config.min,
+          max: config.max,
+          defaultValue: config.defaultValue,
+        });
+      }
+    },
+    load: ({ builder, storage }) => {
+      for (const config of configs) {
+        const value = clampStepperValue(
+          storage?.sync?.[config.storageKey],
+          config.min,
+          config.max,
+          config.defaultValue,
+        );
+        applyStepperUi(getStepperRefs(builder, config.prefix), value, config.min, config.max);
+      }
+    },
+  };
+}
+
 function renderStepperControl(prefix, defaultValue) {
   const decreaseLabel = t("ariaDecrease") || "Decrease";
   const increaseLabel = t("ariaIncrease") || "Increase";

@@ -66,7 +66,9 @@ export const QUICKLINKS_ALLOWED_STYLES = Object.freeze(['large', 'medium', 'smal
 
 export const QUICKLINKS_BOUNDS = Object.freeze({
     dockCount: Object.freeze({ min: 0, max: 20, default: 5 }),
-    magnifyScale: Object.freeze({ min: 0, max: 100, default: 50 }),
+    // 20 is the resting intensity: at 100 the icon under the pointer grows to 2.5× and
+    // rips the dock open, which is a party trick, not a default.
+    magnifyScale: Object.freeze({ min: 0, max: 100, default: 20 }),
     gridColumns: Object.freeze({ min: 4, max: 10, default: 6 }),
     gridRows: Object.freeze({ min: 2, max: 6, default: 4 })
 });

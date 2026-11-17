@@ -4,6 +4,7 @@ import { registerGeneralContent, registerAboutContent, registerChangelogContent 
 import { registerAppearanceContent } from './content-appearance.js';
 import { registerDockContent } from './content-dock.js';
 import { registerDataContent } from './content-data.js';
+import { enhanceSelects, closeSelectMenu } from '../../shared/select-menu.js';
 
 const MENU_ITEMS = [
     {
@@ -236,6 +237,13 @@ export class MacSettingsWindow extends MacWindowBase {
         this._renderContent(menuKey);
     }
 
+    _onBeforeClose() {
+        // The popup lives on document.body so the scroll container cannot clip it;
+        // that also means it outlives the window unless it is closed by hand.
+        closeSelectMenu();
+        super._onBeforeClose?.();
+    }
+
     _renderContent(menuKey) {
         const container = this._window?.querySelector('#macSettingsContentBody');
         if (!container) return;
@@ -255,6 +263,8 @@ export class MacSettingsWindow extends MacWindowBase {
             const finish = () => {
                 if (isCurrent()) {
                     initHtmlI18n(renderRoot);
+                    // After i18n, so the trigger labels read the translated option text.
+                    enhanceSelects(renderRoot);
                 }
             };
             const fail = (error) => {

@@ -23,6 +23,21 @@ function createWindowStub() {
     };
 }
 
+/**
+ * Rows as the settings builder binds them: a chips row is only a container, so its items
+ * are the controls, and each one carries its own key and default.
+ */
+function controlsOf(sections) {
+    const flat = [];
+    for (const section of sections) {
+        for (const row of section.rows || []) {
+            if (row?.type === 'chips') flat.push(...(row.items || []).map((item) => ({ ...item, type: 'toggle', section })));
+            else flat.push({ ...row, section });
+        }
+    }
+    return flat;
+}
+
 function getRowById(rows, id) {
     return rows.find((row) => row?.id === id);
 }
@@ -52,13 +67,18 @@ describe('settings-general-ui-defaults', () => {
 
         const [, config] = mocks.createSettingsBuilder.mock.calls[0];
         const sectionTitles = config.sections.map((section) => section.titleKey);
-        const rows = config.sections.flatMap((section) => section.rows || []);
+        const rows = controlsOf(config.sections);
 
+        // Three groups instead of one eleven-row wall, and the language stays on its own.
         expect(sectionTitles).toEqual([
             'settingsLanguageSection',
-            'settingsUiSection',
-            'settingsLaunchpadDensity'
+            'settingsSectionInterface',
+            'settingsSectionSearch',
+            'settingsLaunchpadSection'
         ]);
+        expect(getRowById(rows, 'macAlwaysShowSearchBox')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.searchAlwaysVisible);
+        expect(getRowById(rows, 'macSearchHistory')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.searchHistoryEnabled);
+        expect(getRowById(rows, 'macSearchSuggestions')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.searchSuggestions);
         expect(getRowById(rows, 'macShowSeconds')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.showSeconds);
         expect(getRowById(rows, 'macSearchOpenNewTab')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.searchOpenInNewTab);
         expect(getRowById(rows, 'macShowRefreshBtn')?.defaultValue).toBe(bgDefaults.showRefreshButton);
@@ -67,15 +87,31 @@ describe('settings-general-ui-defaults', () => {
         expect(getRowById(rows, 'macShowPhotoInfo')?.defaultValue).toBe(bgDefaults.showPhotoInfo);
         expect(getRowById(rows, 'macLaunchpadShowNames')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.launchpadShowNames);
         expect(getRowById(rows, 'macCloseSettingsOnOutsideClick')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.macSettingsDismissOnOutsideClick);
-        expect(rows.some((row) => row.controlHtml?.includes('macGridCols'))).toBe(true);
-        expect(rows.some((row) => row.controlHtml?.includes('macGridRows'))).toBe(true);
+        const launchpad = config.sections.find((section) => section.titleKey === 'settingsLaunchpadSection');
+        const launchpadRows = launchpad?.rows || [];
+        expect(launchpadRows).toHaveLength(2);
+        // Columns and rows are one decision, so they share one row.
+        const densityRow = launchpadRows.find((row) => row.controlHtml?.includes('macGridCols'));
+        expect(densityRow?.controlHtml).toContain('macGridRows');
+        expect(launchpadRows).toHaveLength(2);
 
-        const launchpadDensitySection = config.sections.find(
-            (section) => section.titleKey === 'settingsLaunchpadDensity'
-        );
-        const launchpadDensityRows = launchpadDensitySection?.rows || [];
-        expect(launchpadDensityRows).toHaveLength(2);
-        expect(launchpadDensityRows.some((row) => row.controlHtml?.includes('macGridCols'))).toBe(true);
-        expect(launchpadDensityRows.some((row) => row.controlHtml?.includes('macGridRows'))).toBe(true);
+        const searchSection = config.sections.find((section) => section.titleKey === 'settingsSectionSearch');
+        expect(searchSection?.rows).toHaveLength(2);
+        // The sentence about what goes to Bing belongs to the suggestions switch, not to the
+        // group: a chip has no room for it, so it rides on that chip as a tooltip.
+        const searchChips = searchSection?.rows?.[0];
+        expect(searchChips?.labelKey).toBe('settingsUiSearchGroup');
+        expect(searchChips.items.find((item) => item.id === 'macSearchSuggestions')?.hintKey)
+            .toBe('settingsUiSearchSuggestionsDesc');
+
+        const interfaceSection = config.sections.find((section) => section.titleKey === 'settingsSectionInterface');
+        expect(interfaceSection?.rows).toHaveLength(4);
+        const chipsRow = interfaceSection?.rows?.[0];
+        expect(chipsRow?.type).toBe('chips');
+        expect(chipsRow.items.map((item) => item.id)).toEqual([
+            'macShowRefreshBtn',
+            'macShowSettingsBtn',
+            'macShowCornerSearch'
+        ]);
     });
 });

@@ -1,6 +1,7 @@
 import { t } from '../../platform/i18n.js';
 import { toast } from '../../shared/toast.js';
 import { patchSyncSettings } from '../../platform/settings-repo.js';
+import { initTooltips } from '../../shared/tooltip.js';
 
 const CONTROL_TYPES = new Set(['toggle', 'select', 'slider']);
 
@@ -63,6 +64,8 @@ export class SettingsBuilder {
 
     render() {
         if (!this.container) return;
+        // Idempotent: one delegated layer serves every hint that appears later.
+        initTooltips();
         const html = this.sections
             .filter((section) => section?.type === 'section')
             .map((section) => this._renderSection(section))
@@ -256,6 +259,29 @@ export class SettingsBuilder {
             return this._renderRowShell(row, control);
         }
 
+        if (row.type === 'chips') {
+            const items = Array.isArray(row.items) ? row.items : [];
+            const chips = items.map((item) => {
+                const text = i18n(item.chipLabelKey, item.chipLabel || '');
+                const hint = item.hintKey || item.hint ? i18n(item.hintKey, item.hint || '') : '';
+                // The tooltip is drawn from the attribute; the same sentence is also exposed
+                // to assistive tech through a described-by node, because `content: attr()`
+                // is not something a screen reader is obliged to read.
+                const hintId = hint ? `${item.id}-hint` : '';
+                const tip = hint ? ` data-tooltip="${esc(hint)}"` : '';
+                const described = hint ? ` aria-describedby="${esc(hintId)}"` : '';
+                const hintNode = hint ? `<span class="sr-only" id="${esc(hintId)}">${esc(hint)}</span>` : '';
+                return `
+                    <label class="mac-chip"${tip}>
+                        <input type="checkbox" class="mac-chip-input"${attr('id', item.id)}${described}>
+                        <span class="mac-chip-text">${esc(text)}</span>
+                        ${hintNode}
+                    </label>
+                `;
+            }).join('');
+            return this._renderRowShell(row, `<div class="mac-chip-row">${chips}</div>`);
+        }
+
         if (row.type === 'select') {
             const options = (Array.isArray(row.options) ? row.options : []).map((option) => {
                 const optionText = i18n(option.labelKey, option.label || '');
@@ -441,6 +467,16 @@ export class SettingsBuilder {
             if (section?.type !== 'section') continue;
             const rows = Array.isArray(section.rows) ? section.rows : [];
             for (const row of rows) {
+                // A chips row is only a container: the switches inside it are the controls,
+                // and each one is an independent setting with its own key and its own read
+                // and write. Presenting them as toggles here means bind/load/change/persist
+                // need no idea that chips exist.
+                if (row?.type === 'chips') {
+                    for (const item of Array.isArray(row.items) ? row.items : []) {
+                        yield { section, row: { ...item, type: 'toggle' } };
+                    }
+                    continue;
+                }
                 yield { section, row };
             }
         }

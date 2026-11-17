@@ -6275,6 +6275,131 @@ body:has(.launchpad-overlay.active.paused) .quicklink-dialog-overlay.active {
     padding-left: 2px;
 }
 
+/* ---------------------------------------------------------------------------
+   Chips: several independent switches sharing one row and one label
+   (scripts/domains/settings/builder.js, row type "chips").
+   The visual pill is the text span, not the label, so the checked and focused
+   states can reach it with a sibling selector — no :has() needed.
+   --------------------------------------------------------------------------- */
+
+.mac-chip-row {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.mac-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* A pill has no room for a sentence, so hovering or focusing it lifts the sentence into
+   the shared tooltip layer (scripts/shared/tooltip.js). The layer lives on `body` because
+   the section card is `overflow: hidden`: anything drawn inside it gets clipped the moment
+   it needs a third line. */
+.tooltip-layer {
+    position: fixed;
+    z-index: var(--z-tooltip);
+    max-width: 280px;
+    padding: var(--space-1) var(--space-2);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(50, 50, 55, 0.94), rgba(38, 38, 42, 0.96));
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    box-shadow:
+        0 10px 28px -8px rgba(0, 0, 0, 0.45),
+        inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.94);
+    font-family: var(--font-system);
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: left;
+    white-space: normal;
+    opacity: 0;
+    transform: translateY(2px);
+    transition:
+        opacity var(--duration-fast) var(--ease-out),
+        transform var(--duration-fast) var(--ease-out);
+    pointer-events: none;
+}
+
+.tooltip-layer.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+.mac-chip-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.mac-chip-text {
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: var(--mac-font-size-xs);
+    color: var(--mac-text-secondary);
+    background: transparent;
+    box-shadow: inset 0 0 0 0.5px var(--mac-divider-color);
+    transition:
+        background-color var(--mac-transition-fast),
+        color var(--mac-transition-fast),
+        box-shadow var(--mac-transition-fast);
+}
+
+.mac-chip:hover .mac-chip-text {
+    color: var(--mac-text-primary);
+    background: var(--shadow-color-light);
+}
+
+.mac-chip-input:checked + .mac-chip-text {
+    color: var(--mac-text-primary);
+    font-weight: var(--mac-font-weight-medium);
+    background: var(--mac-content-bg);
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.12),
+        inset 0 0 0 0.5px var(--mac-divider-color);
+}
+
+[data-theme="dark"] .mac-chip-input:checked + .mac-chip-text {
+    background: var(--overlay-highlight);
+}
+
+.mac-chip-input:focus-visible + .mac-chip-text {
+    outline: 2px solid var(--mac-accent-color);
+    outline-offset: 1px;
+}
+
+/* A stepper pair shares one row (启动台 › 布局密度). */
+.mac-stepper-group-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: var(--space-3);
+}
+
+.mac-stepper-group-label {
+    font-size: var(--mac-font-size-xs);
+    color: var(--mac-text-secondary);
+}
+
+.mac-stepper-group-item .mac-stepper {
+    width: 84px;
+}
+
 .mac-settings-section-content {
     background: var(--mac-select-bg);
     border-radius: var(--radius-sm);
@@ -6787,6 +6912,176 @@ body:has(.launchpad-overlay.active.paused) .quicklink-dialog-overlay.active {
 .mac-select-arrow svg {
     width: 100%;
     height: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   Popup menu that replaces the operating system's own `<select>` list
+   (scripts/shared/select-menu.js). One geometry, two palettes: light for the
+   settings window, dark for the hosts whose glass stays dark regardless of the
+   page theme (the bookmarks import sheet passes tone="dark").
+   --------------------------------------------------------------------------- */
+
+/* The select keeps the value contract but is no longer a thing you look at. */
+.select-menu-native {
+    display: none;
+}
+
+/* A host that drew its own arrow beside the select does not need it any more. */
+.has-select-menu > .mac-select-arrow,
+.mac-select.has-select-menu .mac-select-arrow {
+    display: none;
+}
+
+.select-menu-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    width: 100%;
+    height: var(--mac-select-height);
+    padding: 0 10px 0 14px;
+    background: var(--mac-select-bg);
+    border: none;
+    border-radius: var(--mac-select-radius);
+    box-shadow: inset 0 0 0 0.5px var(--mac-divider-color);
+    font-family: inherit;
+    font-size: var(--mac-font-size-sm);
+    color: var(--mac-text-primary);
+    text-align: left;
+    cursor: default;
+    transition:
+        background-color var(--mac-transition-fast),
+        color var(--mac-transition-fast);
+}
+
+.select-menu-trigger:hover {
+    background: var(--shadow-color-light);
+}
+
+[data-theme="dark"] .select-menu-trigger:hover {
+    background: var(--overlay-highlight);
+}
+
+.select-menu-trigger:focus {
+    outline: none;
+}
+
+.select-menu-trigger:focus-visible {
+    outline: 2px solid var(--mac-accent-color);
+    outline-offset: 1px;
+}
+
+.select-menu-trigger[aria-expanded="true"] {
+    background: var(--shadow-color-light);
+}
+
+.select-menu-trigger.is-disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.select-menu-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.select-menu-chevron {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    color: var(--mac-text-secondary);
+    transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.select-menu-trigger[aria-expanded="true"] .select-menu-chevron {
+    transform: rotate(180deg);
+}
+
+/* The bookmarks sheet overrides the trigger to match the select it replaces. */
+.bookmark-option .select-menu-trigger {
+    width: var(--mac-control-width);
+    background: var(--surface-glass);
+    border-radius: var(--mac-select-radius);
+    box-shadow: inset 0 0 0 1px var(--border-default);
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+}
+
+.select-menu-list {
+    --select-menu-bg: rgba(250, 250, 252, 0.94);
+    --select-menu-item-active: rgba(0, 0, 0, 0.06);
+    --select-menu-text: #1d1d1f;
+    --select-menu-ring: rgba(0, 0, 0, 0.1);
+    --select-menu-shadow: 0 14px 36px -8px rgba(0, 0, 0, 0.3), 0 4px 12px -4px rgba(0, 0, 0, 0.18);
+
+    position: fixed;
+    z-index: var(--z-context-menu);
+    width: max-content;
+    min-width: 120px;
+    max-width: 320px;
+    padding: 4px;
+    background: var(--select-menu-bg);
+    border-radius: 10px;
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: var(--select-menu-shadow), inset 0 0 0 0.5px var(--select-menu-ring);
+    animation: select-menu-appear var(--duration-fast) var(--ease-out);
+}
+
+[data-theme="dark"] .select-menu-list,
+.select-menu-list[data-tone="dark"] {
+    --select-menu-bg: linear-gradient(135deg, rgba(50, 50, 55, 0.92), rgba(38, 38, 42, 0.94));
+    --select-menu-item-active: rgba(255, 255, 255, 0.12);
+    --select-menu-text: rgba(255, 255, 255, 0.94);
+    --select-menu-ring: rgba(255, 255, 255, 0.14);
+    --select-menu-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.6), 0 8px 20px -6px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes select-menu-appear {
+    from {
+        opacity: 0;
+        transform: translateY(-3px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.select-menu-item {
+    display: flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 10px 0 6px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: var(--select-menu-text);
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    white-space: nowrap;
+}
+
+.select-menu-item.is-active {
+    background: var(--select-menu-item-active);
+}
+
+.select-menu-item.is-disabled {
+    opacity: 0.45;
+}
+
+.select-menu-check {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    opacity: 0;
+    color: var(--mac-accent-color);
+}
+
+.select-menu-item.is-selected .select-menu-check {
+    opacity: 1;
 }
 
 .mac-stepper {

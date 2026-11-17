@@ -5,7 +5,10 @@ import { describe, expect, it } from 'vitest';
 function readCssRule(selector) {
     const css = readFileSync(resolve(process.cwd(), 'styles/bundle.css'), 'utf8');
     const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const match = css.match(new RegExp(`${escaped}\\s*\\{([^}]*)\\}`, 'm'));
+    // Anchored to the start of a selector line: `.mac-stepper` also appears inside longer
+    // selectors (`.mac-stepper-group-item .mac-stepper`), and an unanchored match read that
+    // one instead of the rule this test is about.
+    const match = css.match(new RegExp(`^\\s*${escaped}\\s*\\{([^}]*)\\}`, 'm'));
     return match?.[1] || '';
 }
 

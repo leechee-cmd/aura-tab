@@ -10,7 +10,7 @@ import {
     resolveShortcutSettings
 } from '../../platform/shortcut-manager.js';
 import { createSettingsBuilder } from './builder.js';
-import { createStepperRow } from './content-dock.js';
+import { createStepperGroupRow } from './content-dock.js';
 import { normalizeLocaleForChangelog, loadChangelogData } from '../changelog/utils.js';
 import { escapeHtml } from '../../shared/text.js';
 import { QUICKLINKS_BOUNDS, QUICKLINKS_SYNC_KEYS } from '../quicklinks/store.js';
@@ -77,52 +77,33 @@ export function registerGeneralContent(window) {
                 },
                 {
                     type: 'section',
-                    titleKey: 'settingsUiSection',
+                    titleKey: 'settingsSectionInterface',
                     rows: [
                         {
-                            type: 'toggle',
-                            id: 'macShowRefreshBtn',
-                            labelKey: 'settingsUiShowRefreshBtn',
-                            storageKey: 'backgroundSettings',
-                            defaultValue: BACKGROUND_UI_DEFAULTS.showRefreshButton,
-                            read: ({ storage }) => storage?.sync?.backgroundSettings?.showRefreshButton,
-                            write: (value) => patchBackgroundSettings({ showRefreshButton: value })
-                        },
-                        {
-                            type: 'toggle',
-                            id: 'macShowSettingsBtn',
-                            labelKey: 'settingsUiShowSettingsBtn',
-                            storageKey: 'showSettingsBtn',
-                            defaultValue: SYNC_SETTINGS_DEFAULTS.showSettingsBtn
-                        },
-                        {
-                            type: 'toggle',
-                            id: 'macShowCornerSearch',
-                            labelKey: 'settingsUiShowCornerSearch',
-                            storageKey: 'showCornerSearch',
-                            defaultValue: SYNC_SETTINGS_DEFAULTS.showCornerSearch
-                        },
-                        {
-                            type: 'toggle',
-                            id: 'macAlwaysShowSearchBox',
-                            labelKey: 'settingsUiAlwaysShowSearchBox',
-                            storageKey: 'searchAlwaysVisible',
-                            defaultValue: SYNC_SETTINGS_DEFAULTS.searchAlwaysVisible
-                        },
-                        {
-                            type: 'toggle',
-                            id: 'macSearchHistory',
-                            labelKey: 'settingsUiSearchHistory',
-                            storageKey: 'searchHistoryEnabled',
-                            defaultValue: SYNC_SETTINGS_DEFAULTS.searchHistoryEnabled
-                        },
-                        {
-                            type: 'toggle',
-                            id: 'macSearchSuggestions',
-                            labelKey: 'settingsUiSearchSuggestions',
-                            descKey: 'settingsUiSearchSuggestionsDesc',
-                            storageKey: 'searchSuggestions',
-                            defaultValue: SYNC_SETTINGS_DEFAULTS.searchSuggestions
+                            type: 'chips',
+                            labelKey: 'settingsUiCornerButtons',
+                            items: [
+                                {
+                                    id: 'macShowRefreshBtn',
+                                    chipLabelKey: 'settingsUiChipRefresh',
+                                    storageKey: 'backgroundSettings',
+                                    defaultValue: BACKGROUND_UI_DEFAULTS.showRefreshButton,
+                                    read: ({ storage }) => storage?.sync?.backgroundSettings?.showRefreshButton,
+                                    write: (value) => patchBackgroundSettings({ showRefreshButton: value })
+                                },
+                                {
+                                    id: 'macShowSettingsBtn',
+                                    chipLabelKey: 'settingsUiChipSettings',
+                                    storageKey: 'showSettingsBtn',
+                                    defaultValue: SYNC_SETTINGS_DEFAULTS.showSettingsBtn
+                                },
+                                {
+                                    id: 'macShowCornerSearch',
+                                    chipLabelKey: 'settingsUiChipSearch',
+                                    storageKey: 'showCornerSearch',
+                                    defaultValue: SYNC_SETTINGS_DEFAULTS.showCornerSearch
+                                }
+                            ]
                         },
                         {
                             type: 'toggle',
@@ -133,13 +114,6 @@ export function registerGeneralContent(window) {
                         },
                         {
                             type: 'toggle',
-                            id: 'macSearchOpenNewTab',
-                            labelKey: 'settingsUiSearchNewTab',
-                            storageKey: 'searchOpenInNewTab',
-                            defaultValue: SYNC_SETTINGS_DEFAULTS.searchOpenInNewTab
-                        },
-                        {
-                            type: 'toggle',
                             id: 'macShowPhotoInfo',
                             rowId: 'macPhotoInfoSetting',
                             labelKey: 'settingsUiShowPhotoInfo',
@@ -147,13 +121,6 @@ export function registerGeneralContent(window) {
                             defaultValue: BACKGROUND_UI_DEFAULTS.showPhotoInfo,
                             read: ({ storage }) => storage?.sync?.backgroundSettings?.showPhotoInfo,
                             write: (value) => patchBackgroundSettings({ showPhotoInfo: value })
-                        },
-                        {
-                            type: 'toggle',
-                            id: 'macLaunchpadShowNames',
-                            labelKey: 'settingsUiLaunchpadShowNames',
-                            storageKey: 'launchpadShowNames',
-                            defaultValue: SYNC_SETTINGS_DEFAULTS.launchpadShowNames
                         },
                         {
                             type: 'toggle',
@@ -168,8 +135,61 @@ export function registerGeneralContent(window) {
                 },
                 {
                     type: 'section',
-                    titleKey: 'settingsLaunchpadDensity',
-                    rows: LAUNCHPAD_DENSITY_STEPPERS.map(createStepperRow)
+                    titleKey: 'settingsSectionSearch',
+                    rows: [
+                        {
+                            type: 'chips',
+                            labelKey: 'settingsUiSearchGroup',
+                            items: [
+                                {
+                                    id: 'macAlwaysShowSearchBox',
+                                    chipLabelKey: 'settingsUiChipAlwaysSearch',
+                                    storageKey: 'searchAlwaysVisible',
+                                    defaultValue: SYNC_SETTINGS_DEFAULTS.searchAlwaysVisible
+                                },
+                                {
+                                    id: 'macSearchHistory',
+                                    chipLabelKey: 'settingsUiChipHistory',
+                                    storageKey: 'searchHistoryEnabled',
+                                    defaultValue: SYNC_SETTINGS_DEFAULTS.searchHistoryEnabled
+                                },
+                                {
+                                    id: 'macSearchSuggestions',
+                                    chipLabelKey: 'settingsUiChipSuggestions',
+                                    // "What you type is sent to Bing" belongs to this switch,
+                                    // not to the group: a chip has no room for it, so it is
+                                    // the chip's tooltip.
+                                    hintKey: 'settingsUiSearchSuggestionsDesc',
+                                    storageKey: 'searchSuggestions',
+                                    defaultValue: SYNC_SETTINGS_DEFAULTS.searchSuggestions
+                                }
+                            ]
+                        },
+                        {
+                            type: 'toggle',
+                            id: 'macSearchOpenNewTab',
+                            labelKey: 'settingsUiSearchNewTab',
+                            storageKey: 'searchOpenInNewTab',
+                            defaultValue: SYNC_SETTINGS_DEFAULTS.searchOpenInNewTab
+                        }
+                    ]
+                },
+                {
+                    type: 'section',
+                    titleKey: 'settingsLaunchpadSection',
+                    rows: [
+                        {
+                            type: 'toggle',
+                            id: 'macLaunchpadShowNames',
+                            labelKey: 'settingsUiLaunchpadShowNames',
+                            storageKey: 'launchpadShowNames',
+                            defaultValue: SYNC_SETTINGS_DEFAULTS.launchpadShowNames
+                        },
+                        createStepperGroupRow({
+                            labelKey: 'settingsLaunchpadGridSize',
+                            steppers: LAUNCHPAD_DENSITY_STEPPERS
+                        })
+                    ]
                 }
             ],
             onAfterLoad: ({ builder, storage }) => {

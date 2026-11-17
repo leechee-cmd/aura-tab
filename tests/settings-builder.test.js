@@ -292,4 +292,53 @@ describe('settings-builder', () => {
         expect(mocks.patchSyncSettings).toHaveBeenCalledTimes(1);
         expect(mocks.patchSyncSettings).toHaveBeenCalledWith({ zoomScale: 140 });
     });
+
+    it('renders a chips row as independently switchable options in one row', async () => {
+        mocks.syncGet.mockResolvedValueOnce({ showA: true, showB: false });
+        const container = mountContainer();
+        const builder = new SettingsBuilder(container, {
+            sections: [
+                {
+                    type: 'section',
+                    titleKey: 'section',
+                    rows: [
+                        {
+                            type: 'chips',
+                            labelKey: 'corner',
+                            items: [
+                                { id: 'chipA', chipLabelKey: 'a', storageKey: 'showA', defaultValue: false, hintKey: 'aHint' },
+                                { id: 'chipB', chipLabelKey: 'b', storageKey: 'showB', defaultValue: false }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        });
+
+        await builder.init();
+
+        // One row, one label, two switches.
+        const row = container.querySelector('.mac-settings-row');
+        expect(row.querySelectorAll('.mac-chip')).toHaveLength(2);
+        expect(row.querySelectorAll('.mac-settings-row-title')).toHaveLength(1);
+
+        // A chip may carry a hint: drawn from the attribute, and described to assistive tech.
+        const chipWithHint = container.querySelector('.mac-chip[data-tooltip]');
+        expect(chipWithHint?.dataset.tooltip).toBe('i18n:aHint');
+        const input = container.querySelector('#chipA');
+        expect(input.getAttribute('aria-describedby')).toBe('chipA-hint');
+        expect(container.querySelector('#chipA-hint')?.textContent).toBe('i18n:aHint');
+        expect(container.querySelector('.mac-chip:not([data-tooltip])')).toBeTruthy();
+
+        // Each switch reads and writes its own key: the row has no storage of its own.
+        expect(builder.getById('chipA').checked).toBe(true);
+        expect(builder.getById('chipB').checked).toBe(false);
+
+        const chipB = builder.getById('chipB');
+        chipB.checked = true;
+        chipB.dispatchEvent(new Event('change'));
+        await flushAsync();
+
+        expect(mocks.patchSyncSettings).toHaveBeenCalledWith({ showB: true });
+    });
 });
