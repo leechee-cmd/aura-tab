@@ -137,8 +137,7 @@ export const CONFIG = {
         maxRetries: 10
     },
     SEARCH: {
-        maxRows: 6,
-        fuzzyThreshold: 0.5
+        maxRows: 6
     }
 };
 

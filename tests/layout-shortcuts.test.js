@@ -60,22 +60,22 @@ describe('layout shortcuts', () => {
         manager._handleKeydown(event);
 
         expect(event.defaultPrevented).toBe(true);
-        expect(toggleSearchSpy).toHaveBeenCalledWith(true, true, { focus: true });
+        expect(toggleSearchSpy).toHaveBeenCalledWith(true, { focus: true });
     });
 
-    it('rolls back optimistic search visibility when persistence fails', async () => {
+    it('keeps the search box state per page instead of persisting it', () => {
         const manager = new LayoutManager();
-        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-        chrome.storage.sync.set.mockRejectedValueOnce(new Error('quota'));
+        chrome.storage.sync.set.mockClear();
 
-        manager.toggleSearch(true, true);
+        manager.toggleSearch(true);
         expect(manager.isSearchActive).toBe(true);
+        expect(document.documentElement.dataset.searchOpen).toBe('1');
 
-        await vi.waitFor(() => expect(manager.isSearchActive).toBe(false));
-        expect(document.querySelector('.layout-container')?.classList.contains('search-active')).toBe(false);
-        expect(errorSpy).toHaveBeenCalledTimes(1);
+        manager.toggleSearch(false);
+        expect(manager.isSearchActive).toBe(false);
+        expect(document.documentElement.dataset.searchOpen).toBe('0');
 
-        errorSpy.mockRestore();
+        expect(chrome.storage.sync.set).not.toHaveBeenCalled();
         manager.destroy();
     });
 });

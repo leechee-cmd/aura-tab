@@ -63,7 +63,7 @@ describe('settings-general-ui-defaults', () => {
         expect(getRowById(rows, 'macSearchOpenNewTab')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.searchOpenInNewTab);
         expect(getRowById(rows, 'macShowRefreshBtn')?.defaultValue).toBe(bgDefaults.showRefreshButton);
         expect(getRowById(rows, 'macShowSettingsBtn')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.showSettingsBtn);
-        expect(getRowById(rows, 'macShowSearchBtn')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.showSearchBtn);
+        expect(getRowById(rows, 'macShowCornerSearch')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.showCornerSearch);
         expect(getRowById(rows, 'macShowPhotoInfo')?.defaultValue).toBe(bgDefaults.showPhotoInfo);
         expect(getRowById(rows, 'macLaunchpadShowNames')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.launchpadShowNames);
         expect(getRowById(rows, 'macCloseSettingsOnOutsideClick')?.defaultValue).toBe(SYNC_SETTINGS_DEFAULTS.macSettingsDismissOnOutsideClick);

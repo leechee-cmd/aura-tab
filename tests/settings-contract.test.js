@@ -28,12 +28,12 @@ describe('settings-contract', () => {
 
     it('resolveSyncSettingsDefaults should fill contract defaults for undefined values', () => {
         const resolved = resolveSyncSettingsDefaults({
-            showSearchBtn: undefined,
+            showCornerSearch: undefined,
             showSettingsBtn: undefined,
             backgroundSettings: undefined
         });
 
-        expect(resolved.showSearchBtn).toBe(SYNC_SETTINGS_DEFAULTS.showSearchBtn);
+        expect(resolved.showCornerSearch).toBe(SYNC_SETTINGS_DEFAULTS.showCornerSearch);
         expect(resolved.showSettingsBtn).toBe(SYNC_SETTINGS_DEFAULTS.showSettingsBtn);
         expect(resolved.backgroundSettings).toEqual(createBackgroundSettingsDefaults());
     });
@@ -47,9 +47,11 @@ describe('settings-contract', () => {
             showSeconds: SYNC_SETTINGS_DEFAULTS.showSeconds,
             preferredSearchEngine: SYNC_SETTINGS_DEFAULTS.preferredSearchEngine,
             searchOpenInNewTab: SYNC_SETTINGS_DEFAULTS.searchOpenInNewTab,
-            searchActive: SYNC_SETTINGS_DEFAULTS.searchActive,
+            searchAlwaysVisible: SYNC_SETTINGS_DEFAULTS.searchAlwaysVisible,
+            showCornerSearch: SYNC_SETTINGS_DEFAULTS.showCornerSearch,
+            searchHistoryEnabled: SYNC_SETTINGS_DEFAULTS.searchHistoryEnabled,
+            searchSuggestions: SYNC_SETTINGS_DEFAULTS.searchSuggestions,
             showSettingsBtn: SYNC_SETTINGS_DEFAULTS.showSettingsBtn,
-            showSearchBtn: SYNC_SETTINGS_DEFAULTS.showSearchBtn,
             launchpadShowNames: SYNC_SETTINGS_DEFAULTS.launchpadShowNames,
             'shortcuts.focusSearch': SYNC_SETTINGS_DEFAULTS['shortcuts.focusSearch'],
             'shortcuts.openLaunchpad': SYNC_SETTINGS_DEFAULTS['shortcuts.openLaunchpad'],
@@ -80,12 +82,12 @@ describe('settings-contract', () => {
         setStorageData({}, 'sync');
 
         const data = await getSyncSettings({
-            showSearchBtn: undefined,
+            showCornerSearch: undefined,
             showSettingsBtn: undefined,
             backgroundSettings: undefined
         });
 
-        expect(data.showSearchBtn).toBe(true);
+        expect(data.showCornerSearch).toBe(false);
         expect(data.showSettingsBtn).toBe(true);
         expect(data.backgroundSettings.showRefreshButton).toBe(BACKGROUND_DEFAULT_SETTINGS.showRefreshButton);
     });
@@ -97,7 +99,7 @@ describe('settings-contract', () => {
             showSeconds: undefined,
             searchOpenInNewTab: undefined,
             showSettingsBtn: undefined,
-            showSearchBtn: undefined,
+            showCornerSearch: undefined,
             launchpadShowNames: undefined,
             'shortcuts.focusSearch': undefined,
             'shortcuts.openLaunchpad': undefined,
@@ -111,7 +113,7 @@ describe('settings-contract', () => {
             showSeconds: SYNC_SETTINGS_DEFAULTS.showSeconds,
             searchOpenInNewTab: SYNC_SETTINGS_DEFAULTS.searchOpenInNewTab,
             showSettingsBtn: SYNC_SETTINGS_DEFAULTS.showSettingsBtn,
-            showSearchBtn: SYNC_SETTINGS_DEFAULTS.showSearchBtn,
+            showCornerSearch: SYNC_SETTINGS_DEFAULTS.showCornerSearch,
             launchpadShowNames: SYNC_SETTINGS_DEFAULTS.launchpadShowNames,
             'shortcuts.focusSearch': SYNC_SETTINGS_DEFAULTS['shortcuts.focusSearch'],
             'shortcuts.openLaunchpad': SYNC_SETTINGS_DEFAULTS['shortcuts.openLaunchpad'],

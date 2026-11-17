@@ -55,8 +55,17 @@ export class LayoutManager extends DisposableComponent {
         }
 
         if (this.searchToggleBtn) {
-            this._events.add(this.searchToggleBtn, 'click', () => this.toggleSearch(undefined, true, { focus: true }));
+            this._events.add(this.searchToggleBtn, 'click', () => this.toggleSearch(undefined, { focus: true }));
         }
+
+        // The resting state is a 2px light line inside this container: clicking anywhere on it
+        // (its hit band is wider than the line) opens the box. Runs before the search module's
+        // own container listener, so the input is already visible when that one focuses it.
+        this._events.add(this.searchContainer, 'click', () => {
+            if (!this.isSearchActive) {
+                this.toggleSearch(true, { focus: true });
+            }
+        });
 
         if (this.refreshBgBtn) {
             this._events.add(this.refreshBgBtn, 'click', () => this.refreshBackground());
@@ -76,13 +85,7 @@ export class LayoutManager extends DisposableComponent {
             void this._updatePhotoInfo(event.detail?.background);
         });
 
-        try {
-            const settings = await getSyncSettings({ searchActive: undefined });
-            if (settings.searchActive) {
-                this.toggleSearch(true, false, { focus: false });
-            }
-        } catch {
-        }
+        await this._initSearchUi();
 
         await this.initAllVisibilitySettings();
 
@@ -97,9 +100,15 @@ export class LayoutManager extends DisposableComponent {
 
             if (areaName !== 'sync') return;
 
-            if (changes.showSearchBtn && this.cornerBottomRight) {
-                const alwaysVisible = changes.showSearchBtn.newValue;
-                this.cornerBottomRight.classList.toggle('always-visible', alwaysVisible);
+            if (changes.showCornerSearch) {
+                this._showCornerSearch = changes.showCornerSearch.newValue === true;
+                this._applyCornerSearch(this._showCornerSearch);
+            }
+
+            if (changes.searchAlwaysVisible) {
+                this._alwaysShowSearch = changes.searchAlwaysVisible.newValue === true;
+                this._persistSearchMirror(this._alwaysShowSearch);
+                this.toggleSearch(this._alwaysShowSearch);
             }
 
             if (changes.showSettingsBtn && this.cornerBottomLeft) {
@@ -141,11 +150,13 @@ export class LayoutManager extends DisposableComponent {
             activeElement.isContentEditable
         );
 
-        if (e.key === '/' && !this.isSearchActive) {
+        if (e.key === '/' && !isInputActive) {
             if (this.checkOpenModals()) return;
 
             e.preventDefault();
-            this.toggleSearch(undefined, true, { focus: true });
+            // With "always show" on, the box is already open and unfocused: focus it rather
+            // than toggling it shut.
+            this.toggleSearch(this.isSearchActive ? true : undefined, { focus: true });
             return;
         }
 
@@ -166,7 +177,7 @@ export class LayoutManager extends DisposableComponent {
 
         if (matchesShortcutEvent(e, this._shortcuts.focusSearch)) {
             e.preventDefault();
-            this.toggleSearch(true, true, { focus: true });
+            this.toggleSearch(true, { focus: true });
             return;
         }
 
@@ -180,7 +191,6 @@ export class LayoutManager extends DisposableComponent {
 
     async initAllVisibilitySettings() {
         const settings = await getSyncSettings({
-            showSearchBtn: undefined,
             showSettingsBtn: undefined,
             launchpadShowNames: undefined,
             [SHORTCUT_SETTING_KEYS.focusSearch]: undefined,
@@ -189,10 +199,6 @@ export class LayoutManager extends DisposableComponent {
         });
 
         const bgSettings = settings.backgroundSettings || {};
-
-        if (this.cornerBottomRight) {
-            this.cornerBottomRight.classList.toggle('always-visible', settings.showSearchBtn);
-        }
 
         if (this.cornerBottomLeft) {
             this.cornerBottomLeft.classList.toggle('always-visible', settings.showSettingsBtn);
@@ -459,13 +465,13 @@ export class LayoutManager extends DisposableComponent {
         }
     }
 
-    toggleSearch(force, save = true, { focus = false } = {}) {
-        const previousState = this.isSearchActive;
+    toggleSearch(force, { focus = false } = {}) {
         this.isSearchActive = typeof force === 'boolean' ? force : !this.isSearchActive;
-        const nextState = this.isSearchActive;
 
-        this.layoutContainer?.classList.toggle('search-active', this.isSearchActive);
-        this.searchContainer?.classList.toggle('show', this.isSearchActive);
+        // <html data-search-open> is the single source of the open/closed shape: the
+        // first-paint script sets it before the first frame so the initial state costs
+        // no animation, and CSS keys both the box and the clock shift off it.
+        document.documentElement.dataset.searchOpen = this.isSearchActive ? '1' : '0';
 
         if (this.isSearchActive && focus && this.searchInput && !this.checkOpenModals()) {
             requestAnimationFrame(() => {
@@ -474,15 +480,82 @@ export class LayoutManager extends DisposableComponent {
                 this.searchInput.focus();
             });
         }
+    }
 
-        if (save) {
-            chrome.storage.sync.set({ searchActive: nextState }).catch((error) => {
-                console.error('[LayoutManager] Failed to save search state:', error);
-                if (this.isSearchActive === nextState) {
-                    this.toggleSearch(previousState, false);
-                }
-            });
+    /**
+     * Which state a freshly opened tab starts in. The old `searchActive` key persisted
+     * "search box shown" across every tab, so hiding it once stranded every later new tab
+     * behind the corner icon. The resting state is now the light line; only an explicit
+     * `searchAlwaysVisible` keeps the box open.
+     */
+    async _initSearchUi() {
+        let stored;
+        try {
+            stored = await chrome.storage.sync.get([
+                'searchAlwaysVisible',
+                'searchActive',
+                'showCornerSearch'
+            ]);
+        } catch (error) {
+            console.warn('[LayoutManager] Failed to read search UI settings:', error);
+            return;
         }
+
+        this._alwaysShowSearch = typeof stored.searchAlwaysVisible === 'boolean'
+            ? stored.searchAlwaysVisible
+            : stored.searchActive === true;
+
+        // The corner icon is optional and secondary to the light line: either it is always
+        // there, or it is not there at all. There is no in-between — the reveal-on-hover
+        // behaviour belongs to the corner zone as a whole, so "sometimes" would have meant
+        // "hidden until the pointer wanders into the corner", which is exactly the
+        // discoverability problem the light line exists to remove.
+        this._showCornerSearch = stored.showCornerSearch === true;
+
+        try {
+            if (typeof stored.searchAlwaysVisible !== 'boolean') {
+                await chrome.storage.sync.set({ searchAlwaysVisible: this._alwaysShowSearch });
+            }
+            if (typeof stored.showCornerSearch !== 'boolean') {
+                await chrome.storage.sync.set({ showCornerSearch: this._showCornerSearch });
+            }
+            if (Object.hasOwn(stored, 'searchActive')) {
+                await chrome.storage.sync.remove('searchActive');
+            }
+        } catch (error) {
+            console.warn('[LayoutManager] Failed to persist search UI settings:', error);
+        }
+
+        this._persistSearchMirror(this._alwaysShowSearch);
+        this._applyCornerSearch(this._showCornerSearch);
+
+        if (this._alwaysShowSearch) {
+            this.toggleSearch(true);
+        }
+    }
+
+    /** Mirror the setting into localStorage so the first-paint script can read it synchronously. */
+    _persistSearchMirror(alwaysVisible) {
+        const api = globalThis.__AURA_FIRST_PAINT__;
+        if (api && typeof api.persistSearchState === 'function') {
+            api.persistSearchState(Boolean(alwaysVisible));
+            return;
+        }
+
+        try {
+            localStorage.setItem('aura:searchAlwaysVisible', alwaysVisible ? '1' : '0');
+        } catch {
+            // ignore: the mirror only affects the first frame
+        }
+    }
+
+    _applyCornerSearch(visible) {
+        if (!this.cornerBottomRight) return;
+
+        // `disabled` takes the whole corner zone out of the layout, so a hidden search
+        // button does not reappear when the pointer passes over the corner.
+        this.cornerBottomRight.classList.toggle('disabled', !visible);
+        this.cornerBottomRight.classList.toggle('always-visible', Boolean(visible));
     }
 
     checkOpenModals() {

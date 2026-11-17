@@ -2,6 +2,7 @@
     const API_KEY = '__AURA_FIRST_PAINT__';
     const STORAGE_KEY = 'aura:firstPaintColor';
     const SNAPSHOT_STORAGE_KEY = 'aura:firstPaintSnapshot';
+    const SEARCH_STATE_KEY = 'aura:searchAlwaysVisible';
     const FALLBACK_COLOR = '#1a1a2e';
     const SNAPSHOT_VERSION = 1;
     const SNAPSHOT_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
@@ -252,9 +253,38 @@
         return writeStoredSnapshot(snapshot);
     }
 
+    // Whether the search box starts open is a chrome.storage.sync setting, and this script
+    // runs before any async storage read is possible. The layout mirrors the setting into
+    // localStorage on every change so the first frame can already be the right shape;
+    // otherwise every tab would paint the resting light line and then animate open.
+    function readStoredSearchState() {
+        try {
+            if (typeof localStorage === 'undefined') return false;
+            return localStorage.getItem(SEARCH_STATE_KEY) === '1';
+        } catch {
+            return false;
+        }
+    }
+
+    function persistSearchState(alwaysVisible) {
+        try {
+            if (typeof localStorage === 'undefined') return false;
+            localStorage.setItem(SEARCH_STATE_KEY, alwaysVisible ? '1' : '0');
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    function applySearchState() {
+        if (!document.documentElement) return;
+        document.documentElement.dataset.searchOpen = readStoredSearchState() ? '1' : '0';
+    }
+
     const api = {
         STORAGE_KEY,
         SNAPSHOT_STORAGE_KEY,
+        SEARCH_STATE_KEY,
         FALLBACK_COLOR,
         normalizeColor,
         normalizeSnapshot,
@@ -262,9 +292,12 @@
         armFirstPaint,
         disarmFirstPaint,
         persistFirstPaintColor,
-        persistFirstPaintSnapshot
+        persistFirstPaintSnapshot,
+        persistSearchState,
+        applySearchState
     };
 
     global[API_KEY] = api;
+    applySearchState();
     api.armFirstPaint();
 })(globalThis);

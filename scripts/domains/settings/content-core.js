@@ -97,10 +97,32 @@ export function registerGeneralContent(window) {
                         },
                         {
                             type: 'toggle',
-                            id: 'macShowSearchBtn',
-                            labelKey: 'settingsUiShowSearchBtn',
-                            storageKey: 'showSearchBtn',
-                            defaultValue: SYNC_SETTINGS_DEFAULTS.showSearchBtn
+                            id: 'macShowCornerSearch',
+                            labelKey: 'settingsUiShowCornerSearch',
+                            storageKey: 'showCornerSearch',
+                            defaultValue: SYNC_SETTINGS_DEFAULTS.showCornerSearch
+                        },
+                        {
+                            type: 'toggle',
+                            id: 'macAlwaysShowSearchBox',
+                            labelKey: 'settingsUiAlwaysShowSearchBox',
+                            storageKey: 'searchAlwaysVisible',
+                            defaultValue: SYNC_SETTINGS_DEFAULTS.searchAlwaysVisible
+                        },
+                        {
+                            type: 'toggle',
+                            id: 'macSearchHistory',
+                            labelKey: 'settingsUiSearchHistory',
+                            storageKey: 'searchHistoryEnabled',
+                            defaultValue: SYNC_SETTINGS_DEFAULTS.searchHistoryEnabled
+                        },
+                        {
+                            type: 'toggle',
+                            id: 'macSearchSuggestions',
+                            labelKey: 'settingsUiSearchSuggestions',
+                            descKey: 'settingsUiSearchSuggestionsDesc',
+                            storageKey: 'searchSuggestions',
+                            defaultValue: SYNC_SETTINGS_DEFAULTS.searchSuggestions
                         },
                         {
                             type: 'toggle',

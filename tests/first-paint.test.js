@@ -33,6 +33,22 @@ describe('first paint boot script', () => {
         removeOverlay();
     });
 
+    it('decides the search box shape before the first frame', async () => {
+        localStorage.setItem('aura:searchAlwaysVisible', '1');
+
+        await loadFirstPaintScript();
+        expect(document.documentElement.dataset.searchOpen).toBe('1');
+
+        localStorage.setItem('aura:searchAlwaysVisible', '0');
+        const api = await loadFirstPaintScript();
+        expect(document.documentElement.dataset.searchOpen).toBe('0');
+
+        expect(api.persistSearchState(true)).toBe(true);
+        expect(localStorage.getItem('aura:searchAlwaysVisible')).toBe('1');
+        api.applySearchState();
+        expect(document.documentElement.dataset.searchOpen).toBe('1');
+    });
+
     it('arms first paint with stored color', async () => {
         localStorage.setItem('aura:firstPaintColor', '#123456');
 

@@ -3,6 +3,53 @@ import { setStorageInChunks } from '../../shared/storage.js';
 import { clamp } from '../../shared/text.js';
 import { normalizeIconAppearance } from './icon-appearance.js';
 
+/**
+ * A link's searchable text, with the parts of a URL people actually type: no
+ * scheme, no `www.`, no trailing slash. Matching the raw URL meant `www.` and
+ * `https://` could be typed at you, and nothing else could.
+ */
+function searchableUrl(url) {
+    const raw = String(url || '').toLowerCase();
+    if (!raw) return { host: '', path: '' };
+    let rest = raw.replace(/^[a-z][a-z0-9+.-]*:\/\//, '').replace(/^www\./, '');
+    rest = rest.replace(/\/+$/, '');
+    const slash = rest.indexOf('/');
+    if (slash < 0) return { host: rest, path: '' };
+    return { host: rest.slice(0, slash), path: rest.slice(slash + 1) };
+}
+
+/**
+ * How well one item answers one query word, 0 when it does not answer it at all.
+ * The order of the tiers is the ranking the panel and the launchpad have always
+ * had — title, then tags, then URL — with the title split into "starts with"
+ * above "contains" so a typed prefix wins over a coincidence.
+ */
+function scoreToken(item, token) {
+    const title = String(item.title || '').toLowerCase();
+    if (title.startsWith(token)) return 100;
+    if (title.includes(token)) return 80;
+    if (item.type === 'folder') return 0;
+    if ((item.tags || []).join(' ').toLowerCase().includes(token)) return 60;
+    const { host, path } = searchableUrl(item.url);
+    if (host.includes(token)) return 40;
+    if (path.includes(token)) return 20;
+    return 0;
+}
+
+/**
+ * Every word has to land somewhere (AND), and the item's score is the sum, so a
+ * query matching in the title on one word and the tags on another still ranks.
+ */
+function scoreItem(item, tokens) {
+    let total = 0;
+    for (const token of tokens) {
+        const score = scoreToken(item, token);
+        if (score === 0) return 0;
+        total += score;
+    }
+    return total;
+}
+
 export const QUICKLINKS_SYNC_KEYS = Object.freeze({
     enabled: 'quicklinksEnabled',
     style: 'quicklinksStyle',
@@ -205,6 +252,7 @@ class Store {
         this._lastLocalStorageRevision = null;
         this._dockCleanupScheduled = false;
         this._pendingDockCleanup = null;
+        this._initPromise = null;
         this._destroyed = false;
     }
     _dedupeTagsRaw(raw, maxCount) {
@@ -922,6 +970,22 @@ class Store {
         }
     }
     async init() {
+        // Idempotent: the layout owns the idle-time init, and the search box may need
+        // link candidates before that runs. Share one in-flight promise instead of
+        // loading twice (which would double-register the storage listener).
+        if (this._initPromise) return this._initPromise;
+
+        this._assertNotDestroyed();
+        const running = this._initOnce();
+        this._initPromise = running;
+        try {
+            await running;
+        } catch (error) {
+            this._initPromise = null;
+            throw error;
+        }
+    }
+    async _initOnce() {
         this._assertNotDestroyed();
         await this.loadSettings();
         await this.loadData();
@@ -2110,37 +2174,31 @@ class Store {
     }
     search(query, options = {}) {
         if (!query || typeof query !== 'string') return [];
-        let q = query.trim();
-        if (!q) return [];
-        if (q.startsWith('#')) {
-            return this.getItemsByTag(q.slice(1));
+        const trimmed = query.trim();
+        if (!trimmed) return [];
+        if (trimmed.startsWith('#')) {
+            return this.getItemsByTag(trimmed.slice(1));
         }
-        q = q.toLowerCase();
+
+        const tokens = trimmed.toLowerCase().split(/\s+/).filter(Boolean);
+        if (tokens.length === 0) return [];
+
         const { limit = 50 } = options;
         // Search all items including folder children; folders match by title only
         const items = this.getAllItemsFlat();
         if (items.length === 0) return [];
-        const titleMatches = [];
-        const urlMatches = [];
-        const tagMatches = [];
+
+        const scored = [];
         for (const item of items) {
-            const title = (item.title || '').toLowerCase();
-            if (item.type === 'folder') {
-                if (title.includes(q)) titleMatches.push(item);
-                continue;
-            }
-            const url = (item.url || '').toLowerCase();
-            const tags = (item.tags || []).join(' ').toLowerCase();
-            if (title.includes(q)) {
-                titleMatches.push(item);
-            } else if (tags.includes(q)) {
-                tagMatches.push(item);
-            } else if (url.includes(q)) {
-                urlMatches.push(item);
-            }
+            const score = scoreItem(item, tokens);
+            if (score > 0) scored.push({ item, score });
         }
-        const merged = [...titleMatches, ...tagMatches, ...urlMatches];
-        return merged.slice(0, limit);
+
+        scored.sort((a, b) => b.score - a.score
+            || (a.item.title || '').length - (b.item.title || '').length
+            || String(a.item.title || '').localeCompare(String(b.item.title || '')));
+
+        return scored.slice(0, limit).map((entry) => entry.item);
     }
     _generateId() {
         if (globalThis.crypto?.randomUUID) {

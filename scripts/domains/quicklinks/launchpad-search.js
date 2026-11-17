@@ -39,9 +39,7 @@ const launchpadSearchMethods = {
         this._state.isSearching = true;
 
         const results = store.search(query, {
-            limit: this._gridColumns * this._config.SEARCH.maxRows,
-            fuzzyThreshold: this._config.SEARCH.fuzzyThreshold,
-            includeScore: false
+            limit: this._gridColumns * this._config.SEARCH.maxRows
         });
 
         if (this._dom.pagesWrapper) {
