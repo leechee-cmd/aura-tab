@@ -12,7 +12,7 @@
  *   tests/settings/settings-contract.test.js
  *   tests/settings/settings-builder.test.js
  */
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { resetMocks, setStorageData } from '../setup.js';
 import { DEFAULT_SETTINGS as BACKGROUND_DEFAULT_SETTINGS } from '../../scripts/domains/backgrounds/types.js';
 import { SettingsBuilder } from '../../scripts/domains/settings/builder.js';
@@ -165,12 +165,24 @@ function mountContainer() {
     return container;
 }
 
+// These cases point three chrome.storage entry points at their own doubles. resetMocks() only
+// clears data and call history, so without putting the setup.js versions back the contract
+// cases above keep reading through them — and an empty read silently drops settings keys.
+const setupStorageGet = chrome.storage.sync.get;
+const setupLocalGet = chrome.storage.local.get;
+const setupLocalSet = chrome.storage.local.set;
+
 async function flushAsync() {
     await Promise.resolve();
     await Promise.resolve();
 }
 
 describe('settings-builder', () => {
+    afterEach(() => {
+        chrome.storage.sync.get = setupStorageGet;
+        chrome.storage.local.get = setupLocalGet;
+        chrome.storage.local.set = setupLocalSet;
+    });
     beforeEach(() => {
         document.body.innerHTML = '';
 
