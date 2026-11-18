@@ -845,12 +845,15 @@ html[data-search-open='1'] .date {
         0 4px 12px rgba(0, 0, 0, 0.12),
         0 8px 24px rgba(0, 0, 0, 0.1);
 
-    filter:
-        drop-shadow(0 0 60px var(--surface-glass)) drop-shadow(0 0 120px rgba(255, 255, 255, 0.04));
+    /* No wide glow, deliberately. A drop-shadow at these radii (60px / 120px) is rendered into
+       a texture and blurred; the clock's font-size shrink during the open animation changes the
+       glyph size every frame, so the texture and both blurs are rebuilt every frame. Measured as
+       the largest single cost of that animation. It bought a 7/255 halo on a dark wallpaper when
+       the box is closed, and nothing at all once it is open — the two states are pixel-identical
+       there. Do not put a blurred filter back on this element. */
 
     transition:
         transform var(--duration-normal) var(--ease-spring),
-        filter var(--duration-slow) var(--ease-default),
         font-size var(--duration-normal) var(--ease-spring);
 }
 
