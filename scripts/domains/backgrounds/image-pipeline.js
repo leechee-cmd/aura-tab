@@ -12,13 +12,13 @@ import { getApplyOptions, getPrepareTimeoutMs, shouldPreloadNextBackground } fro
 import { shouldRefreshBackground } from './refresh-policy.js';
 
 const FIRST_PAINT_API_KEY = '__AURA_FIRST_PAINT__';
-const FIRST_PAINT_STORAGE_KEY = 'aura:firstPaintColor';
-const FIRST_PAINT_SNAPSHOT_STORAGE_KEY = 'aura:firstPaintSnapshot';
+const FIRST_PAINT_STORAGE_KEY = 'leechee:firstPaintColor';
+const FIRST_PAINT_SNAPSHOT_STORAGE_KEY = 'leechee:firstPaintSnapshot';
 const FIRST_PAINT_PREVIEW_WIDTH = 48;
 const FIRST_PAINT_PREVIEW_HEIGHT = 27;
 const FIRST_PAINT_SNAPSHOT_VERSION = 1;
 const FIRST_PAINT_IMAGE_LOAD_TIMEOUT_MS = 5000;
-const CACHE_INDEX_STORAGE_KEY = 'aura:bgCacheIndex:v1';
+const CACHE_INDEX_STORAGE_KEY = 'leechee:bgCacheIndex:v1';
 const CACHE_INDEX_VERSION = 1;
 
 let _firstPaintSnapshotChain = Promise.resolve();

@@ -1,10 +1,10 @@
 ---
-id: aura-backgrounds
+id: leechee-backgrounds
 type: module-design
 status: draft
 title: 壁纸系统（来源、裁剪、缓存、轮换）
-parent: aura-architecture
-depends-on: [aura-platform]
+parent: leechee-architecture
+depends-on: [leechee-platform]
 ---
 
 # 壁纸系统

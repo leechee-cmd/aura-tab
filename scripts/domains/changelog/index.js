@@ -2,7 +2,7 @@ import { normalizeLocaleForChangelog, loadChangelogData, pickChangelogItems } fr
 import { mount, isVisible, updateContent } from './view.js'
 import { macSettingsWindow } from '../settings/window.js'
 
-const LAST_SEEN_VERSION_KEY = 'changelog:lastSeenVersion'
+const LAST_SEEN_VERSION_KEY = 'leechee:lastSeenVersion'
 const SHOW_CHANGELOG_MESSAGE = 'showChangelog'
 
 async function shouldShowVersion(version) {

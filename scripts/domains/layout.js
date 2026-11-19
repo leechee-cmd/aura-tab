@@ -543,7 +543,7 @@ export class LayoutManager extends DisposableComponent {
         }
 
         try {
-            localStorage.setItem('aura:searchAlwaysVisible', alwaysVisible ? '1' : '0');
+            localStorage.setItem('leechee:searchAlwaysVisible', alwaysVisible ? '1' : '0');
         } catch {
             // ignore: the mirror only affects the first frame
         }

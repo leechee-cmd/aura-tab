@@ -5,16 +5,16 @@ set -e
 
 # Extract version from manifest.json
 VERSION=$(grep '"version"' manifest.json | head -1 | awk -F: '{ print $2 }' | sed 's/[", ]//g')
-OUTPUT_FILE="aura-tab-v${VERSION}.zip"
+OUTPUT_FILE="leechee-v${VERSION}.zip"
 
-echo "📦 Packaging Aura Tab v${VERSION} (Chrome Web Store — allowlist only)..."
+echo "📦 Packaging Leechee v${VERSION} (allowlist only — Edge Add-ons / Chrome Web Store)..."
 
 if ! command -v zip &> /dev/null; then
     echo "Error: 'zip' command not found."
     exit 1
 fi
 
-rm -f aura-tab-v*.zip
+rm -f leechee-v*.zip
 
 # Allowlist: runtime files only (manifest, new tab page, service worker, i18n, CSS, JS, store assets).
 # Excludes by omission: .git, .github, tests, node_modules, docs, tooling, dev assets (e.g. assets/other).
@@ -24,6 +24,7 @@ zip -r "$OUTPUT_FILE" \
     newtab.html \
     background-worker.js \
     LICENSE \
+    PRIVACY.md \
     styles \
     scripts \
     _locales \
@@ -34,4 +35,4 @@ zip -r "$OUTPUT_FILE" \
     -x "**/.DS_Store"
 
 echo "✅ Compression complete!"
-echo "You can upload $OUTPUT_FILE to the Chrome Web Store."
+echo "Upload $OUTPUT_FILE to the Microsoft Edge Add-ons (Partner Center) or the Chrome Web Store."

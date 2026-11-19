@@ -386,7 +386,7 @@ async function freshSearchCasesStore() {
 }
 
 const CORPUS = [
-    { _id: 'qlink_gh', title: 'GitHub', url: 'https://github.com/leech/aura-tab' },
+    { _id: 'qlink_gh', title: 'GitHub', url: 'https://github.com/leech/leechee' },
     { _id: 'qlink_gl', title: 'GitLab', url: 'https://gitlab.com' },
     { _id: 'qlink_gitea', title: '自建 Gitea', url: 'https://git.mine.dev' },
     { _id: 'qlink_docs', title: '团队文档', url: 'https://docs.example.com/git/flow', tags: ['文档'] },

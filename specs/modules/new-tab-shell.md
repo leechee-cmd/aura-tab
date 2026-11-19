@@ -1,10 +1,10 @@
 ---
-id: aura-shell
+id: leechee-shell
 type: module-design
 status: active
 title: 新标签页外壳（首屏、布局、时钟、搜索）
-parent: aura-architecture
-depends-on: [aura-platform, aura-quicklinks]
+parent: leechee-architecture
+depends-on: [leechee-platform, leechee-quicklinks]
 ---
 
 # 新标签页外壳

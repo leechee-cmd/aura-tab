@@ -20,7 +20,7 @@ function enqueueSettingsWrite(task) {
     const run = () => {
         const locks = globalThis.navigator?.locks;
         if (locks?.request) {
-            return locks.request('aura-tab:settings', { mode: 'exclusive' }, task);
+            return locks.request('leechee:settings', { mode: 'exclusive' }, task);
         }
         return task();
     };

@@ -1,6 +1,6 @@
 ---
 name: Bug Report / Feature Request
-about: Create a report to help us improve Aura Tab
+about: Create a report to help us improve Leechee
 title: '[BUG/FEAT] '
 labels: ''
 assignees: ''

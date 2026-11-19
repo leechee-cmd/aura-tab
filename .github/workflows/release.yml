@@ -52,12 +52,12 @@ jobs:
         prerelease: false
         generate_release_notes: true
         files: |
-          aura-tab-v${{ env.VERSION }}.zip
+          leechee-v${{ env.VERSION }}.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: aura-tab-extension-v${{ env.VERSION }}
-        path: aura-tab-v${{ env.VERSION }}.zip
+        name: leechee-extension-v${{ env.VERSION }}
+        path: leechee-v${{ env.VERSION }}.zip

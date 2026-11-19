@@ -79,7 +79,7 @@ function writeSettingsFromUi(patch, onSuccess) {
     void writeSettings(patch)
         .then(onSuccess)
         .catch((error) => {
-            console.error('[Aura Tab] clock settings save failed:', error);
+            console.error('[Leechee] clock settings save failed:', error);
         });
 }
 
@@ -112,7 +112,7 @@ export async function initClock() {
     try {
         settings = await getSyncSettings(DEFAULTS);
     } catch (error) {
-        console.warn('[Aura Tab] clock settings load failed:', error);
+        console.warn('[Leechee] clock settings load failed:', error);
         settings = { ...DEFAULTS };
     }
 

@@ -1,8 +1,8 @@
 (function bootstrapFirstPaint(global) {
     const API_KEY = '__AURA_FIRST_PAINT__';
-    const STORAGE_KEY = 'aura:firstPaintColor';
-    const SNAPSHOT_STORAGE_KEY = 'aura:firstPaintSnapshot';
-    const SEARCH_STATE_KEY = 'aura:searchAlwaysVisible';
+    const STORAGE_KEY = 'leechee:firstPaintColor';
+    const SNAPSHOT_STORAGE_KEY = 'leechee:firstPaintSnapshot';
+    const SEARCH_STATE_KEY = 'leechee:searchAlwaysVisible';
     const FALLBACK_COLOR = '#1a1a2e';
     const SNAPSHOT_VERSION = 1;
     const SNAPSHOT_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;

@@ -1,10 +1,10 @@
 ---
-id: aura-changelog
+id: leechee-changelog
 type: module-design
 status: draft
 title: 版本更新日志
-parent: aura-architecture
-depends-on: [aura-settings, aura-platform]
+parent: leechee-architecture
+depends-on: [leechee-settings, leechee-platform]
 ---
 
 # 版本更新日志

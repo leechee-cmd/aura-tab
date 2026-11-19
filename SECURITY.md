@@ -9,7 +9,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in Aura Tab, please report it responsibly.
+If you discover a security vulnerability in Leechee, please report it responsibly.
 
 **Do NOT open a public issue.** Instead:
 
@@ -44,7 +44,7 @@ The following are out of scope:
 
 ## Security Best Practices
 
-Aura Tab follows these security practices:
+Leechee follows these security practices:
 
 - **Content Security Policy**: Strict CSP via `manifest.json`
 - **Input sanitization**: All user input is escaped via `escapeHtml()` before DOM insertion

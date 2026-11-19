@@ -1,10 +1,10 @@
 ---
-id: aura-settings
+id: leechee-settings
 type: module-design
 status: draft
 title: 设置窗口与数据备份
-parent: aura-architecture
-depends-on: [aura-platform, aura-quicklinks, aura-changelog]
+parent: leechee-architecture
+depends-on: [leechee-platform, leechee-quicklinks, leechee-changelog]
 ---
 
 # 设置窗口与数据备份

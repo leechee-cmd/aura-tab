@@ -13,6 +13,7 @@ import { createSettingsBuilder } from './builder.js';
 import { createStepperGroupRow } from './content-dock.js';
 import { normalizeLocaleForChangelog, loadChangelogData } from '../changelog/utils.js';
 import { escapeHtml } from '../../shared/text.js';
+import { BRAND } from '../../shared/brand.js';
 import { QUICKLINKS_BOUNDS, QUICKLINKS_SYNC_KEYS } from '../quicklinks/store.js';
 
 const ONLINE_BACKGROUND_SOURCES = ['unsplash', 'pixabay', 'pexels', 'bing'];
@@ -209,7 +210,7 @@ export function registerAboutContent(window) {
     window.registerContentRenderer('about', (container) => {
         const manifest = chrome.runtime.getManifest();
         const version = manifest.version || '1.0.0';
-        const name = manifest.name || 'Aura Tab';
+        const name = manifest.name || 'Leechee';
         const safeName = escapeHtml(name);
         const currentYear = new Date().getFullYear();
 
@@ -228,7 +229,7 @@ export function registerAboutContent(window) {
                 <div id="macAboutSections" class="mac-about-sections"></div>
 
                 <div class="mac-about-footer">
-                    <p>© ${currentYear} Aura Tab. ${t('macSettingsAllRightsReserved') || 'All rights reserved.'}</p>
+                    <p>© ${currentYear} Leechee. ${t('macSettingsAllRightsReserved') || 'All rights reserved.'}</p>
                 </div>
             </div>
         `;
@@ -301,7 +302,7 @@ export function registerAboutContent(window) {
                             type: 'custom',
                             html: `
                                 <div class="mac-about-links">
-                                    <a href="https://github.com/nil-byte/aura-tab"
+                                    <a href="${BRAND.repoUrl}"
                                        target="_blank"
                                        rel="noopener noreferrer"
                                        class="mac-about-link-btn">
@@ -313,7 +314,7 @@ export function registerAboutContent(window) {
                                             <path d="M4.5 2.5l3.5 3.5-3.5 3.5" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </a>
-                                    <a href="https://nil-byte.github.io/aura-tab/"
+                                    <a href="${BRAND.homepageUrl}"
                                        target="_blank"
                                        rel="noopener noreferrer"
                                        class="mac-about-link-btn">
@@ -325,7 +326,7 @@ export function registerAboutContent(window) {
                                             <path d="M4.5 2.5l3.5 3.5-3.5 3.5" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </a>
-                                    <a href="https://nil-byte.github.io/aura-tab-privacy-policy/"
+                                    <a href="${BRAND.privacyUrl}"
                                        target="_blank"
                                        rel="noopener noreferrer"
                                        class="mac-about-link-btn">

@@ -74,5 +74,5 @@ jobs:
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
-        name: aura-tab-extension
-        path: aura-tab-*.zip
+        name: leechee-extension
+        path: leechee-*.zip

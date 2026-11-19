@@ -407,7 +407,7 @@ describe('search suggestions', () => {
     });
 
     it('opens the link a row stands for, and closes the panel', async () => {
-        mocks.search.mockReturnValue([{ _id: 'qlink_gh', title: 'GitHub', url: 'https://github.com/leech/aura-tab' }]);
+        mocks.search.mockReturnValue([{ _id: 'qlink_gh', title: 'GitHub', url: 'https://github.com/leech/leechee' }]);
         const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
 
         const search = await mountSearch();
@@ -417,7 +417,7 @@ describe('search suggestions', () => {
         search.handleSearch(keyEvent('ArrowDown'));
         search.handleSearch(keyEvent('Enter'));
 
-        expect(openSpy).toHaveBeenCalledWith('https://github.com/leech/aura-tab', '_blank', 'noopener,noreferrer');
+        expect(openSpy).toHaveBeenCalledWith('https://github.com/leech/leechee', '_blank', 'noopener,noreferrer');
         expect(search._suggestionsOpen).toBe(false);
 
         openSpy.mockRestore();
@@ -425,7 +425,7 @@ describe('search suggestions', () => {
     });
 
     it('gives a link row the site icon instead of a letter box', async () => {
-        mocks.search.mockReturnValue([{ _id: 'qlink_gh', title: 'GitHub', url: 'https://github.com/leech/aura-tab' }]);
+        mocks.search.mockReturnValue([{ _id: 'qlink_gh', title: 'GitHub', url: 'https://github.com/leech/leechee' }]);
 
         const search = await mountSearch();
         search.searchInput.value = 'github';
@@ -453,7 +453,7 @@ describe('search suggestions', () => {
     });
 
     it('shows the domain next to a link so a URL match makes sense', async () => {
-        mocks.search.mockReturnValue([{ _id: 'x', title: 'aura-tab', url: 'https://www.github.com/leech/aura-tab' }]);
+        mocks.search.mockReturnValue([{ _id: 'x', title: 'leechee', url: 'https://www.github.com/leech/leechee' }]);
 
         const search = await mountSearch();
         search.searchInput.value = 'github';

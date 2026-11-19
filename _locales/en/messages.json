@@ -1,10 +1,10 @@
 {
   "extName": {
-    "message": "Aura Tab",
+    "message": "Leechee",
     "description": "Extension name displayed in browser"
   },
   "extDescription": {
-    "message": "Redefine your new tab with minimalist aesthetics. Dynamic light orbs, 4K wallpapers, macOS-style Dock, and zero-lag performance.",
+    "message": "Calm, fast new tab: 4K wallpapers, dynamic light, macOS-style Dock and quick links. All local, no accounts, no telemetry.",
     "description": "Extension description displayed in browser and store"
   }
 }

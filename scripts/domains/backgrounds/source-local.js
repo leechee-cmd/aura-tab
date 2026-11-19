@@ -12,7 +12,7 @@ import {
     LOCAL_FILES_CONFIG
 } from './types.js';
 
-const DB_NAME = 'aura-tab-local-files';
+const DB_NAME = 'leechee-local-files';
 const DB_VERSION = 1;
 const STORE_NAME = 'files';
 
@@ -109,7 +109,7 @@ export async function deleteLocalFileBlobs(id) {
 
 const LOCALFILES_CHANGED_EVENT = 'background:localfiles-changed';
 const LOCALFILES_WRITE_ID_KEY = 'backgroundFilesWriteId';
-const LOCALFILES_LOCK_NAME = 'aura-tab:local-files';
+const LOCALFILES_LOCK_NAME = 'leechee:local-files';
 const MAX_TRACKED_WRITE_IDS = 32;
 
 class LocalFilesManager {

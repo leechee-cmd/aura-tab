@@ -1,10 +1,10 @@
 ---
-id: aura-bookmarks
+id: leechee-bookmarks
 type: module-design
 status: draft
 title: 书签导入与导出
-parent: aura-architecture
-depends-on: [aura-quicklinks, aura-platform]
+parent: leechee-architecture
+depends-on: [leechee-quicklinks, leechee-platform]
 ---
 
 # 书签导入与导出

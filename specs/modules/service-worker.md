@@ -1,10 +1,10 @@
 ---
-id: aura-worker
+id: leechee-worker
 type: module-design
 status: draft
 title: Service Worker（刷新闹钟、图标抓取代理、消息协议）
-parent: aura-architecture
-depends-on: [aura-platform, aura-backgrounds]
+parent: leechee-architecture
+depends-on: [leechee-platform, leechee-backgrounds]
 ---
 
 # Service Worker

@@ -14,6 +14,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { modalLayer } from '../../scripts/platform/modal-layer.js';
 import { closeSelectMenu, enhanceSelect, enhanceSelects } from '../../scripts/shared/select-menu.js';
+import { BRAND } from '../../scripts/shared/brand.js';
 
 // ===== from tests/settings/settings-about-changelog-ui.test.js =====
 function createWindowStub() {
@@ -40,7 +41,7 @@ describe('settings about/changelog UI', () => {
         vi.clearAllMocks();
         document.body.innerHTML = '';
         chrome.runtime.getManifest = vi.fn(() => ({
-            name: 'Aura Tab',
+            name: 'Leechee',
             version: '9.9.9'
         }));
     });
@@ -64,18 +65,18 @@ describe('settings about/changelog UI', () => {
         const links = Array.from(container.querySelectorAll('.mac-about-link-btn'));
         expect(links).toHaveLength(3);
         expect(links.map((link) => link.getAttribute('href'))).toEqual([
-            'https://github.com/nil-byte/aura-tab',
-            'https://nil-byte.github.io/aura-tab/',
-            'https://nil-byte.github.io/aura-tab-privacy-policy/'
+            BRAND.repoUrl,
+            BRAND.homepageUrl,
+            BRAND.privacyUrl
         ]);
         expect(
             container.querySelector(
-                'a[href="https://nil-byte.github.io/aura-tab/"] .mac-about-link-icon--homepage'
+                `a[href="${BRAND.homepageUrl}"] .mac-about-link-icon--homepage`
             )
         ).toBeTruthy();
         expect(
             container.querySelector(
-                'a[href="https://nil-byte.github.io/aura-tab-privacy-policy/"] .mac-about-link-icon--privacy'
+                `a[href="${BRAND.privacyUrl}"] .mac-about-link-icon--privacy`
             )
         ).toBeTruthy();
 
@@ -163,7 +164,7 @@ describe('MacSettingsWindow', () => {
         document.body.innerHTML = '';
         modalLayer.destroy();
         chrome.runtime.getManifest = vi.fn(() => ({
-            name: 'Aura Tab',
+            name: 'Leechee',
             version: '9.9.9'
         }));
     });

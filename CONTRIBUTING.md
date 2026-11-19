@@ -1,12 +1,12 @@
-# Contributing to Aura Tab
+# Contributing to Leechee
 
-感谢您对 Aura Tab 项目的关注！我们欢迎并感激任何形式的贡献。
+感谢您对 Leechee 项目的关注！我们欢迎并感激任何形式的贡献。
 
 ## 如何贡献
 
 ### 报告问题
 
-如果您发现了 bug 或有功能建议，请通过 [GitHub Issues](https://github.com/nil-byte/aura-tab/issues) 提交：
+如果您发现了 bug 或有功能建议，请通过 [GitHub Issues](https://github.com/leechee-cmd/aura-tab/issues) 提交：
 
 1. 搜索现有 issues，确认问题未被报告
 2. 使用清晰的标题描述问题
@@ -21,7 +21,7 @@
 
 1. **Fork 仓库**
    ```bash
-   git clone https://github.com/nil-byte/aura-tab.git
+   git clone https://github.com/leechee-cmd/aura-tab.git
    cd aura-tab
    ```
 
@@ -121,15 +121,15 @@ npm run test:watch
 
 **English Version**
 
-# Contributing to Aura Tab
+# Contributing to Leechee
 
-Thank you for your interest in Aura Tab! We welcome and appreciate all forms of contributions.
+Thank you for your interest in Leechee! We welcome and appreciate all forms of contributions.
 
 ## How to Contribute
 
 ### Reporting Issues
 
-If you find a bug or have a feature suggestion, please submit via [GitHub Issues](https://github.com/nil-byte/aura-tab/issues):
+If you find a bug or have a feature suggestion, please submit via [GitHub Issues](https://github.com/leechee-cmd/aura-tab/issues):
 
 1. Search existing issues to ensure it's not already reported
 2. Use a clear title to describe the issue
@@ -144,7 +144,7 @@ If you find a bug or have a feature suggestion, please submit via [GitHub Issues
 
 1. **Fork the repository**
    ```bash
-   git clone https://github.com/nil-byte/aura-tab.git
+   git clone https://github.com/leechee-cmd/aura-tab.git
    cd aura-tab
    ```
 

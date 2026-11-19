@@ -1,10 +1,10 @@
 {
   "extName": {
-    "message": "Aura Tab",
+    "message": "荔枝",
     "description": "Extension name displayed in browser"
   },
   "extDescription": {
-    "message": "重塑新标签页美学。独家动态光晕与毛玻璃质感，搭配 4K 高清壁纸与灵动 Dock 栏。原生极速，零广告零追踪。",
+    "message": "清爽、快速的新标签页：4K 壁纸、动态光晕、macOS 风格 Dock 与快速链接。全部本地存储，无需账号，不上传数据。",
     "description": "Extension description displayed in browser and store"
   }
 }

@@ -90,23 +90,23 @@ describe('first paint boot script', () => {
     });
 
     it('decides the search box shape before the first frame', async () => {
-        localStorage.setItem('aura:searchAlwaysVisible', '1');
+        localStorage.setItem('leechee:searchAlwaysVisible', '1');
 
         await loadFirstPaintScript();
         expect(document.documentElement.dataset.searchOpen).toBe('1');
 
-        localStorage.setItem('aura:searchAlwaysVisible', '0');
+        localStorage.setItem('leechee:searchAlwaysVisible', '0');
         const api = await loadFirstPaintScript();
         expect(document.documentElement.dataset.searchOpen).toBe('0');
 
         expect(api.persistSearchState(true)).toBe(true);
-        expect(localStorage.getItem('aura:searchAlwaysVisible')).toBe('1');
+        expect(localStorage.getItem('leechee:searchAlwaysVisible')).toBe('1');
         api.applySearchState();
         expect(document.documentElement.dataset.searchOpen).toBe('1');
     });
 
     it('arms first paint with stored color', async () => {
-        localStorage.setItem('aura:firstPaintColor', '#123456');
+        localStorage.setItem('leechee:firstPaintColor', '#123456');
 
         const api = await loadFirstPaintScript();
 
@@ -116,7 +116,7 @@ describe('first paint boot script', () => {
     });
 
     it('falls back to default color when stored color is invalid', async () => {
-        localStorage.setItem('aura:firstPaintColor', 'not-a-color');
+        localStorage.setItem('leechee:firstPaintColor', 'not-a-color');
 
         const api = await loadFirstPaintScript();
 
@@ -126,7 +126,7 @@ describe('first paint boot script', () => {
 
     it('disarmFirstPaint completes immediately for pure-color mode (no overlay)', async () => {
         // No snapshot stored → no overlay created → disarm should be instant
-        localStorage.setItem('aura:firstPaintColor', '#aabbcc');
+        localStorage.setItem('leechee:firstPaintColor', '#aabbcc');
         const api = await loadFirstPaintScript();
 
         api.disarmFirstPaint();
@@ -136,7 +136,7 @@ describe('first paint boot script', () => {
     });
 
     it('disarmFirstPaint is idempotent', async () => {
-        localStorage.setItem('aura:firstPaintColor', '#112233');
+        localStorage.setItem('leechee:firstPaintColor', '#112233');
         const api = await loadFirstPaintScript();
 
         api.disarmFirstPaint();
@@ -150,10 +150,10 @@ describe('first paint boot script', () => {
         const api = await loadFirstPaintScript();
 
         expect(api.persistFirstPaintColor('#abcdef')).toBe(true);
-        expect(localStorage.getItem('aura:firstPaintColor')).toBe('#abcdef');
+        expect(localStorage.getItem('leechee:firstPaintColor')).toBe('#abcdef');
 
         expect(api.persistFirstPaintColor('bad-color')).toBe(false);
-        expect(localStorage.getItem('aura:firstPaintColor')).toBe('#abcdef');
+        expect(localStorage.getItem('leechee:firstPaintColor')).toBe('#abcdef');
     });
 
     it('prefers stored snapshot: creates overlay and applies color', async () => {
@@ -166,8 +166,8 @@ describe('first paint boot script', () => {
             repeat: 'no-repeat',
             ts: Date.now()
         };
-        localStorage.setItem('aura:firstPaintSnapshot', JSON.stringify(snapshot));
-        localStorage.setItem('aura:firstPaintColor', '#ffffff');
+        localStorage.setItem('leechee:firstPaintSnapshot', JSON.stringify(snapshot));
+        localStorage.setItem('leechee:firstPaintColor', '#ffffff');
 
         await loadFirstPaintScript();
 
@@ -193,7 +193,7 @@ describe('first paint boot script', () => {
             repeat: 'no-repeat',
             ts: Date.now()
         };
-        localStorage.setItem('aura:firstPaintSnapshot', JSON.stringify(snapshot));
+        localStorage.setItem('leechee:firstPaintSnapshot', JSON.stringify(snapshot));
 
         await loadFirstPaintScript();
 
@@ -211,7 +211,7 @@ describe('first paint boot script', () => {
             repeat: 'no-repeat',
             ts: Date.now()
         };
-        localStorage.setItem('aura:firstPaintSnapshot', JSON.stringify(snapshot));
+        localStorage.setItem('leechee:firstPaintSnapshot', JSON.stringify(snapshot));
 
         const api = await loadFirstPaintScript();
 
@@ -243,7 +243,7 @@ describe('first paint boot script', () => {
             repeat: 'no-repeat',
             ts: Date.now()
         };
-        localStorage.setItem('aura:firstPaintSnapshot', JSON.stringify(snapshot));
+        localStorage.setItem('leechee:firstPaintSnapshot', JSON.stringify(snapshot));
 
         const api = await loadFirstPaintScript();
         api.disarmFirstPaint();
@@ -275,9 +275,9 @@ describe('first paint boot script', () => {
         });
 
         expect(ok).toBe(true);
-        expect(localStorage.getItem('aura:firstPaintColor')).toBe('#556677');
+        expect(localStorage.getItem('leechee:firstPaintColor')).toBe('#556677');
 
-        const rawSnapshot = localStorage.getItem('aura:firstPaintSnapshot');
+        const rawSnapshot = localStorage.getItem('leechee:firstPaintSnapshot');
         expect(rawSnapshot).toBeTruthy();
         const parsed = JSON.parse(rawSnapshot);
         expect(parsed.color).toBe('#556677');

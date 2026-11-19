@@ -1,10 +1,10 @@
 ---
-id: aura-photos
+id: leechee-photos
 type: module-design
 status: draft
 title: 照片查看器
-parent: aura-architecture
-depends-on: [aura-backgrounds, aura-platform]
+parent: leechee-architecture
+depends-on: [leechee-backgrounds, leechee-platform]
 ---
 
 # 照片查看器

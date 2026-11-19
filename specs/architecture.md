@@ -1,16 +1,16 @@
 ---
-id: aura-architecture
+id: leechee-architecture
 type: architecture-design
 status: draft
-title: Aura Tab — 架构总览
-parent: aura-goal
+title: Leechee — 架构总览
+parent: leechee-goal
 ---
 
-# Aura Tab — 架构总览
+# Leechee — 架构总览
 
 ## 一分钟版本
 
-装进浏览器后，Aura Tab 是三份各自运行的代码，互相只能发消息，不能直接调用。
+装进浏览器后，Leechee 是三份各自运行的代码，互相只能发消息，不能直接调用。
 
 - **新标签页**（`newtab.html`）：全部界面与业务。每开一个标签页就从零启动一次，关掉就全没了。
 - **后台服务**（`background-worker.js`）：没有界面的进程，浏览器空闲一会儿就可能杀掉它，有事件再唤醒。它负责定时换壁纸、代替页面抓网站图标。

@@ -17,7 +17,7 @@ const CONFIG = {
     /** Export version number */
     EXPORT_VERSION: 1,
     /** Source identifier */
-    SOURCE_NAME: 'Aura Tab'
+    SOURCE_NAME: 'Leechee'
 };
 
 // ========== Exporter Class ==========
@@ -57,7 +57,7 @@ class LinkExporter {
     exportAsHtml() {
         const lines = [
             '<!DOCTYPE NETSCAPE-Bookmark-file-1>',
-            '<!-- Exported from Aura Tab -->',
+            '<!-- Exported from Leechee -->',
             '<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">',
             '<TITLE>Bookmarks</TITLE>',
             '<H1>Bookmarks</H1>',
@@ -164,7 +164,7 @@ class LinkExporter {
         const pad = (n) => String(n).padStart(2, '0');
         const d = new Date();
         const stamp = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
-        return `aura-tab-export-${stamp}.${format}`;
+        return `leechee-export-${stamp}.${format}`;
     }
 
     // ========== Utility Methods ==========
