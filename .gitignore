@@ -11,3 +11,6 @@ coverage/
 *.zip
 .alma-snapshots
 .worktrees/
+
+# Asset sources (generated icons are committed, the raw renders are not)
+assets/icon-source.jpg
