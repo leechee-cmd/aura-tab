@@ -80,11 +80,11 @@ describe('changelog', () => {
         });
         const args = view.mount.mock.calls[0][0];
         await args.onClose();
-        expect(getStorageData('local')['leechee:lastSeenVersion']).toBe('3.0');
+        expect(getStorageData('local')['lychee:lastSeenVersion']).toBe('3.0');
     });
 
     it('should not mount when current version is already seen', async () => {
-        setStorageData({ 'leechee:lastSeenVersion': '3.0' }, 'local');
+        setStorageData({ 'lychee:lastSeenVersion': '3.0' }, 'local');
         const view = await import('../../scripts/domains/changelog/view.js');
         await initChangelog({ payload: { '3.0': { en: ['a'] } } });
         expect(view.mount).not.toHaveBeenCalled();
@@ -93,7 +93,7 @@ describe('changelog', () => {
     it('runtime message should not remount seen version', async () => {
         const listeners = [];
         global.chrome.runtime.onMessage.addListener = vi.fn((fn) => listeners.push(fn));
-        setStorageData({ 'leechee:lastSeenVersion': '3.0' }, 'local');
+        setStorageData({ 'lychee:lastSeenVersion': '3.0' }, 'local');
 
         const { view } = await initChangelog({ payload: {} });
         await listeners[0]({ type: 'showChangelog', version: '3.0' });

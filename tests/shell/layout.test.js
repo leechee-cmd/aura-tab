@@ -190,7 +190,7 @@ describe('search UI on a fresh tab', () => {
         expect(manager.isSearchActive).toBe(false);
         expect(searchIsOpen()).toBe(false);
         expect(chrome.storage.sync.set).toHaveBeenCalledWith({ searchAlwaysVisible: false });
-        expect(localStorage.getItem('leechee:searchAlwaysVisible')).toBe('0');
+        expect(localStorage.getItem('lychee:searchAlwaysVisible')).toBe('0');
         manager.destroy();
     });
 
@@ -202,7 +202,7 @@ describe('search UI on a fresh tab', () => {
 
         expect(manager.isSearchActive).toBe(true);
         expect(searchIsOpen()).toBe(true);
-        expect(localStorage.getItem('leechee:searchAlwaysVisible')).toBe('1');
+        expect(localStorage.getItem('lychee:searchAlwaysVisible')).toBe('1');
         manager.destroy();
     });
 

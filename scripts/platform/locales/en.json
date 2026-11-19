@@ -263,6 +263,7 @@
     "macSettingsLatest": "Latest",
     "macSettingsVersion": "Version",
     "macSettingsAboutDesc": "A beautiful new tab extension with macOS-style design, featuring quick links, wallpapers, and more.",
+    "macSettingsBuiltOn": "Built on Aura Tab (MIT)",
     "macSettingsShortcuts": "Keyboard Shortcuts",
     "macSettingsOpenSettings": "Open Settings",
     "macSettingsCloseOverlay": "Close Overlay",

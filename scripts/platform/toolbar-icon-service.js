@@ -7,7 +7,7 @@ import {
 } from './toolbar-icon-renderer.js';
 
 const STORAGE_KEY = 'toolbarIconConfig';
-const IDB_NAME = 'leechee-toolbar-icon';
+const IDB_NAME = 'lychee-toolbar-icon';
 const IDB_STORE = 'icons';
 const IDB_VERSION = 1;
 

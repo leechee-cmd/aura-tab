@@ -1,10 +1,10 @@
 ---
-id: leechee-changelog
+id: lychee-changelog
 type: module-design
 status: draft
 title: 版本更新日志
-parent: leechee-architecture
-depends-on: [leechee-settings, leechee-platform]
+parent: lychee-architecture
+depends-on: [lychee-settings, lychee-platform]
 ---
 
 # 版本更新日志

@@ -1,10 +1,10 @@
 ---
-id: leechee-shell
+id: lychee-shell
 type: module-design
 status: active
 title: 新标签页外壳（首屏、布局、时钟、搜索）
-parent: leechee-architecture
-depends-on: [leechee-platform, leechee-quicklinks]
+parent: lychee-architecture
+depends-on: [lychee-platform, lychee-quicklinks]
 ---
 
 # 新标签页外壳

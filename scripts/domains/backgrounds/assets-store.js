@@ -1,7 +1,7 @@
 import { idbRequest, idbCursorAll, idbCursorEach } from '../../shared/storage.js';
 
 const ASSETS_CONFIG = Object.freeze({
-    DB_NAME: 'leechee-assets',
+    DB_NAME: 'lychee-assets',
     DB_VERSION: 1,
     STORE_NAME: 'images',
     thumbnail: Object.freeze({

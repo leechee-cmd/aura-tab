@@ -2,7 +2,7 @@
 import { fetchWithRetry, fetchWithTimeout } from './net.js';
 
 export class WebDAVClient {
-    constructor({ baseUrl, username, password, remoteDir = 'LeecheeBackups' }) {
+    constructor({ baseUrl, username, password, remoteDir = 'LycheeBackups' }) {
         this.baseUrl = baseUrl.replace(/\/+$/, ''); // remove trailing slashes
         this.username = username;
         this.password = password;
@@ -175,7 +175,7 @@ export class WebDAVClient {
 
     _sanitizeRemoteDir(dir) {
         if (!dir || typeof dir !== 'string') {
-            return 'LeecheeBackups';
+            return 'LycheeBackups';
         }
 
         let sanitized = dir
@@ -185,7 +185,7 @@ export class WebDAVClient {
             .trim();
 
         if (!sanitized) {
-            return 'LeecheeBackups';
+            return 'LycheeBackups';
         }
 
         return sanitized;
@@ -290,7 +290,7 @@ export function generateBackupFilename() {
     const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
     const time = `${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
 
-    return `leechee-backup_${date}_${time}.zip`;
+    return `lychee-backup_${date}_${time}.zip`;
 }
 
 export function formatFileSize(bytes) {

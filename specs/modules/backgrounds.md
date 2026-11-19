@@ -1,10 +1,10 @@
 ---
-id: leechee-backgrounds
+id: lychee-backgrounds
 type: module-design
 status: draft
 title: 壁纸系统（来源、裁剪、缓存、轮换）
-parent: leechee-architecture
-depends-on: [leechee-platform]
+parent: lychee-architecture
+depends-on: [lychee-platform]
 ---
 
 # 壁纸系统

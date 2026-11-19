@@ -1,10 +1,10 @@
 ---
-id: leechee-settings
+id: lychee-settings
 type: module-design
 status: draft
 title: 设置窗口与数据备份
-parent: leechee-architecture
-depends-on: [leechee-platform, leechee-quicklinks, leechee-changelog]
+parent: lychee-architecture
+depends-on: [lychee-platform, lychee-quicklinks, lychee-changelog]
 ---
 
 # 设置窗口与数据备份

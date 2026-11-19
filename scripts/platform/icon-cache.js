@@ -9,7 +9,7 @@ import { fetchIconBlobViaBackground } from './icon-fetch-bridge.js';
  */
 class IconCacheManager {
   static CONFIG = {
-    DB_NAME: 'leechee-icon-cache',
+    DB_NAME: 'lychee-icon-cache',
     DB_VERSION: 2,
     STORE_NAME: 'icons',
     MAX_TOTAL_SIZE: 20 * 1024 * 1024,

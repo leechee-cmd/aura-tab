@@ -79,7 +79,7 @@ export function registerDataContent(window) {
                             <label class="data-settings-field">
                                 <span class="data-settings-field__label" data-i18n="webdavRemoteDir"></span>
                                 <span class="data-settings-field__hint" data-i18n="webdavRemoteDirDesc"></span>
-                                <input type="text" class="mac-input data-settings-field__control" id="webdavRemoteDir" placeholder="LeecheeBackups">
+                                <input type="text" class="mac-input data-settings-field__control" id="webdavRemoteDir" placeholder="LycheeBackups">
                             </label>
 
                             <label class="data-settings-field">
@@ -362,7 +362,7 @@ async function _saveWebDAVConfig(container) {
 function _getWebDAVConfigFromForm(container) {
     return {
         baseUrl: container.querySelector('#webdavServerUrl')?.value?.trim() || '',
-        remoteDir: container.querySelector('#webdavRemoteDir')?.value?.trim() || 'LeecheeBackups',
+        remoteDir: container.querySelector('#webdavRemoteDir')?.value?.trim() || 'LycheeBackups',
         username: container.querySelector('#webdavUsername')?.value?.trim() || '',
         password: container.querySelector('#webdavPassword')?.value || ''
     };

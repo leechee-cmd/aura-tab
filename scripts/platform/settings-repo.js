@@ -20,7 +20,7 @@ function enqueueSettingsWrite(task) {
     const run = () => {
         const locks = globalThis.navigator?.locks;
         if (locks?.request) {
-            return locks.request('leechee:settings', { mode: 'exclusive' }, task);
+            return locks.request('lychee:settings', { mode: 'exclusive' }, task);
         }
         return task();
     };

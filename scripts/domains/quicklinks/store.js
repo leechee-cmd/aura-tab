@@ -305,7 +305,7 @@ class Store {
             let taskFailed = false;
             let taskError = null;
             try {
-                return await locks.request('leechee:store', { mode: 'exclusive' }, async () => {
+                return await locks.request('lychee:store', { mode: 'exclusive' }, async () => {
                     try {
                         return await task();
                     } catch (error) {

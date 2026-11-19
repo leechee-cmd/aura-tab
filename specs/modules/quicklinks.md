@@ -1,10 +1,10 @@
 ---
-id: leechee-quicklinks
+id: lychee-quicklinks
 type: module-design
 status: draft
 title: 快速链接（分页、文件夹、Dock、启动台）
-parent: leechee-architecture
-depends-on: [leechee-platform]
+parent: lychee-architecture
+depends-on: [lychee-platform]
 ---
 
 # 快速链接

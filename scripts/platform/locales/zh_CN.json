@@ -263,6 +263,7 @@
     "macSettingsLatest": "最新",
     "macSettingsVersion": "版本",
     "macSettingsAboutDesc": "一个精美的新标签页扩展，具有 macOS 风格设计，支持快捷链接、壁纸等功能。",
+    "macSettingsBuiltOn": "基于 Aura Tab（MIT）",
     "macSettingsShortcuts": "键盘快捷键",
     "macSettingsOpenSettings": "打开设置",
     "macSettingsCloseOverlay": "关闭覆盖层",

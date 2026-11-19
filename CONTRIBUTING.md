@@ -1,6 +1,6 @@
-# Contributing to Leechee
+# Contributing to Lychee Tab
 
-感谢您对 Leechee 项目的关注！我们欢迎并感激任何形式的贡献。
+感谢您对 Lychee Tab 项目的关注！我们欢迎并感激任何形式的贡献。
 
 ## 如何贡献
 
@@ -121,9 +121,9 @@ npm run test:watch
 
 **English Version**
 
-# Contributing to Leechee
+# Contributing to Lychee Tab
 
-Thank you for your interest in Leechee! We welcome and appreciate all forms of contributions.
+Thank you for your interest in Lychee Tab! We welcome and appreciate all forms of contributions.
 
 ## How to Contribute
 

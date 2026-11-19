@@ -6664,6 +6664,21 @@ body:has(.launchpad-overlay.active.paused) .quicklink-dialog-overlay.active {
     color: var(--mac-text-tertiary);
 }
 
+.mac-about-credit {
+    margin-bottom: var(--space-2) !important;
+}
+
+.mac-about-credit-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+}
+
+.mac-about-credit-link:hover {
+    color: var(--mac-text-secondary);
+    border-bottom-color: currentColor;
+}
+
 @media (max-width: 640px) {
     .mac-about-header {
         align-items: center;

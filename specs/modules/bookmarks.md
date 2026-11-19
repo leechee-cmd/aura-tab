@@ -1,10 +1,10 @@
 ---
-id: leechee-bookmarks
+id: lychee-bookmarks
 type: module-design
 status: draft
 title: 书签导入与导出
-parent: leechee-architecture
-depends-on: [leechee-quicklinks, leechee-platform]
+parent: lychee-architecture
+depends-on: [lychee-quicklinks, lychee-platform]
 ---
 
 # 书签导入与导出

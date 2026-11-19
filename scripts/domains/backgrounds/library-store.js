@@ -46,11 +46,11 @@ class LibraryStore {
     }
 
     async _withLock(fn) {
-        return this._withNamedLock('leechee:library', fn);
+        return this._withNamedLock('lychee:library', fn);
     }
 
     async _withQueueLock(fn) {
-        return this._withNamedLock('leechee:library-download', fn);
+        return this._withNamedLock('lychee:library-download', fn);
     }
 
     _toValidatedMap(obj) {

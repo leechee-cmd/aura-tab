@@ -26,7 +26,7 @@ async function initTheme() {
         const { uiTheme } = await getSyncSettings({ uiTheme: undefined });
         apply(uiTheme);
     } catch (error) {
-        console.warn('[Leechee] theme init failed:', error);
+        console.warn('[Lychee] theme init failed:', error);
     }
 
     chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -72,7 +72,7 @@ async function main() {
     initHtmlI18n();
     void initChangelog();
     void initBackgroundSystem().catch((error) => {
-        console.error('[Leechee] background init failed:', error);
+        console.error('[Lychee] background init failed:', error);
         disarmFirstPaint();
     });
 
@@ -98,11 +98,11 @@ async function main() {
                 macWindow?.toggle?.();
             });
         })().catch((error) => {
-            console.error('[Leechee] quicklinks/settings init failed:', error);
+            console.error('[Lychee] quicklinks/settings init failed:', error);
         });
     });
 }
 
 main().catch((error) => {
-    console.error('[Leechee] bootstrap failed:', error);
+    console.error('[Lychee] bootstrap failed:', error);
 });

@@ -61,14 +61,14 @@ describe('background cache governor', () => {
         const targetUrl = 'https://example.com/background-1.jpg';
 
         await fetchAndCacheObjectUrl(targetUrl, 'cache-test');
-        const rawAfterFetch = localStorage.getItem('leechee:bgCacheIndex:v1');
+        const rawAfterFetch = localStorage.getItem('lychee:bgCacheIndex:v1');
         expect(rawAfterFetch).toBeTruthy();
         const indexAfterFetch = JSON.parse(rawAfterFetch);
         expect(indexAfterFetch.entries[targetUrl]).toBeTruthy();
 
         const firstAccess = indexAfterFetch.entries[targetUrl].lastAccess;
         await getCachedObjectUrl(targetUrl, 'cache-test-hit');
-        const indexAfterHit = JSON.parse(localStorage.getItem('leechee:bgCacheIndex:v1'));
+        const indexAfterHit = JSON.parse(localStorage.getItem('lychee:bgCacheIndex:v1'));
         expect(indexAfterHit.entries[targetUrl].lastAccess).toBeGreaterThanOrEqual(firstAccess);
     });
 
@@ -82,7 +82,7 @@ describe('background cache governor', () => {
 
         await vi.advanceTimersByTimeAsync(3000);
 
-        const index = JSON.parse(localStorage.getItem('leechee:bgCacheIndex:v1'));
+        const index = JSON.parse(localStorage.getItem('lychee:bgCacheIndex:v1'));
         expect(Object.keys(index.entries).length).toBeLessThanOrEqual(120);
         expect(cacheMock.delete).toHaveBeenCalled();
     });

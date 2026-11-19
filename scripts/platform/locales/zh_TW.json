@@ -263,6 +263,7 @@
     "macSettingsLatest": "最新",
     "macSettingsVersion": "版本",
     "macSettingsAboutDesc": "一個精美的新分頁擴充功能，具有 macOS 風格設計，支援快捷連結、桌布等功能。",
+    "macSettingsBuiltOn": "基於 Aura Tab（MIT）",
     "macSettingsShortcuts": "鍵盤快捷鍵",
     "macSettingsOpenSettings": "打開設定",
     "macSettingsCloseOverlay": "關閉覆蓋層",

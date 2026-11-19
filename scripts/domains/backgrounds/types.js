@@ -68,7 +68,7 @@ export { DEFAULT_SETTINGS } from './defaults.js';
  */
 
 export const CACHE_CONFIG = Object.freeze({
-    name: 'leechee-backgrounds',
+    name: 'lychee-backgrounds',
     maxAge: 7 * 24 * 60 * 60 * 1000,
     ttlMs: 14 * 24 * 60 * 60 * 1000,
     maxEntries: 120,

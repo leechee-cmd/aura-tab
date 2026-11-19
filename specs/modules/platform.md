@@ -1,9 +1,9 @@
 ---
-id: leechee-platform
+id: lychee-platform
 type: module-design
 status: draft
 title: 平台抽象层（设置契约、存储、生命周期、i18n、备份、图标）
-parent: leechee-architecture
+parent: lychee-architecture
 ---
 
 # 平台抽象层

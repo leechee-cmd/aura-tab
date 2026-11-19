@@ -1,10 +1,10 @@
 ---
-id: leechee-worker
+id: lychee-worker
 type: module-design
 status: draft
 title: Service Worker（刷新闹钟、图标抓取代理、消息协议）
-parent: leechee-architecture
-depends-on: [leechee-platform, leechee-backgrounds]
+parent: lychee-architecture
+depends-on: [lychee-platform, lychee-backgrounds]
 ---
 
 # Service Worker

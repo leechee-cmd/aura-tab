@@ -1,10 +1,10 @@
 ---
-id: leechee-photos
+id: lychee-photos
 type: module-design
 status: draft
 title: 照片查看器
-parent: leechee-architecture
-depends-on: [leechee-backgrounds, leechee-platform]
+parent: lychee-architecture
+depends-on: [lychee-backgrounds, lychee-platform]
 ---
 
 # 照片查看器

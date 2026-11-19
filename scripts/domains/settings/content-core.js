@@ -210,7 +210,7 @@ export function registerAboutContent(window) {
     window.registerContentRenderer('about', (container) => {
         const manifest = chrome.runtime.getManifest();
         const version = manifest.version || '1.0.0';
-        const name = manifest.name || 'Leechee';
+        const name = manifest.name || 'Lychee Tab';
         const safeName = escapeHtml(name);
         const currentYear = new Date().getFullYear();
 
@@ -229,7 +229,8 @@ export function registerAboutContent(window) {
                 <div id="macAboutSections" class="mac-about-sections"></div>
 
                 <div class="mac-about-footer">
-                    <p>© ${currentYear} Leechee. ${t('macSettingsAllRightsReserved') || 'All rights reserved.'}</p>
+                    <p class="mac-about-credit"><a class="mac-about-credit-link" href="${BRAND.upstreamUrl}" target="_blank" rel="noopener noreferrer">${t('macSettingsBuiltOn')}</a></p>
+                    <p>© ${currentYear} Lychee Tab. ${t('macSettingsAllRightsReserved') || 'All rights reserved.'}</p>
                 </div>
             </div>
         `;

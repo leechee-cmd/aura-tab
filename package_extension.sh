@@ -5,16 +5,16 @@ set -e
 
 # Extract version from manifest.json
 VERSION=$(grep '"version"' manifest.json | head -1 | awk -F: '{ print $2 }' | sed 's/[", ]//g')
-OUTPUT_FILE="leechee-v${VERSION}.zip"
+OUTPUT_FILE="lychee-v${VERSION}.zip"
 
-echo "📦 Packaging Leechee v${VERSION} (allowlist only — Edge Add-ons / Chrome Web Store)..."
+echo "📦 Packaging Lychee Tab v${VERSION} (allowlist only — Edge Add-ons / Chrome Web Store)..."
 
 if ! command -v zip &> /dev/null; then
     echo "Error: 'zip' command not found."
     exit 1
 fi
 
-rm -f leechee-v*.zip
+rm -f lychee-v*.zip
 
 # Allowlist: runtime files only (manifest, new tab page, service worker, i18n, CSS, JS, store assets).
 # Excludes by omission: .git, .github, tests, node_modules, docs, tooling, dev assets (e.g. assets/other).

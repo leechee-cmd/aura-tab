@@ -1,4 +1,4 @@
-# Leechee · 荔枝
+# Lychee Tab · 荔枝
 
 [![Tests](https://github.com/leechee-cmd/aura-tab/actions/workflows/ci.yml/badge.svg)](https://github.com/leechee-cmd/aura-tab/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -66,7 +66,7 @@ Store listing in progress. Until it is live, use the manual installation below.
 3. Open Chrome/Edge and navigate to `chrome://extensions` or `edge://extensions`
 4. Enable "Developer mode" in the top right
 5. Click "Load unpacked" and select the unzipped folder
-6. Open a new tab to see Leechee in action
+6. Open a new tab to see Lychee Tab in action
 
 ## Development
 
@@ -101,7 +101,7 @@ npm run test:watch
 ### Project Structure
 
 ```
-Leechee/
+Lychee Tab/
 ├── scripts/
 │   ├── boot/           # First paint optimization
 │   ├── domains/        # Feature modules (DDD architecture)
@@ -163,7 +163,7 @@ See [assets/changelog.json](assets/changelog.json) for the version history shown
 
 This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
 
-Leechee is an independent fork of [Aura Tab](https://github.com/nil-byte/aura-tab), which is also MIT
+Lychee Tab is an independent fork of [Aura Tab](https://github.com/nil-byte/aura-tab), which is also MIT
 licensed. The original copyright notice is kept in [LICENSE](LICENSE) as the license requires.
 
 ## Acknowledgments
@@ -241,7 +241,7 @@ npm test
 
 MIT 许可，见 [LICENSE](LICENSE)。
 
-Leechee 是 [Aura Tab](https://github.com/nil-byte/aura-tab) 的独立分支，上游同样以 MIT 许可发布。
+Lychee Tab 是 [Aura Tab](https://github.com/nil-byte/aura-tab) 的独立分支，上游同样以 MIT 许可发布。
 按许可证要求，原始版权声明保留在 [LICENSE](LICENSE) 中。
 
 ## 感谢

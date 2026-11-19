@@ -41,7 +41,7 @@ describe('settings about/changelog UI', () => {
         vi.clearAllMocks();
         document.body.innerHTML = '';
         chrome.runtime.getManifest = vi.fn(() => ({
-            name: 'Leechee',
+            name: 'Lychee',
             version: '9.9.9'
         }));
     });
@@ -98,6 +98,12 @@ describe('settings about/changelog UI', () => {
 
         const keycaps = Array.from(container.querySelectorAll('.mac-keycap'));
         expect(keycaps).toHaveLength(4);
+
+        // 上游致谢：MIT 授权的那一项，必须始终能在关于页点到。
+        const credit = container.querySelector('.mac-about-credit-link');
+        expect(credit).toBeTruthy();
+        expect(credit.getAttribute('href')).toBe(BRAND.upstreamUrl);
+        expect(credit.getAttribute('rel')).toBe('noopener noreferrer');
     });
 
     it('changelog page should render the latest 20 versions only', async () => {
@@ -164,7 +170,7 @@ describe('MacSettingsWindow', () => {
         document.body.innerHTML = '';
         modalLayer.destroy();
         chrome.runtime.getManifest = vi.fn(() => ({
-            name: 'Leechee',
+            name: 'Lychee',
             version: '9.9.9'
         }));
     });

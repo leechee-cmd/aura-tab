@@ -1,8 +1,8 @@
-# Leechee — Privacy Policy
+# Lychee Tab — Privacy Policy
 
 _Last updated: 2026-11-19_
 
-Leechee is a new tab extension. It has no account system, no analytics, no telemetry, and no server of
+Lychee Tab is a new tab extension. It has no account system, no analytics, no telemetry, and no server of
 its own. This policy states plainly what is stored on your device and what leaves it.
 
 ## What stays on your device
@@ -73,11 +73,11 @@ Questions about this policy: open an issue at
 
 ---
 
-# Leechee（荔枝）隐私政策
+# Lychee Tab（荔枝）隐私政策
 
 _最后更新：2026-11-19_
 
-Leechee 是一个新标签页扩展。它没有账号系统、没有统计分析、没有遥测，也没有自己的服务器。这份政策说明什么数据留在你的设备上、什么数据会离开。
+Lychee Tab 是一个新标签页扩展。它没有账号系统、没有统计分析、没有遥测，也没有自己的服务器。这份政策说明什么数据留在你的设备上、什么数据会离开。
 
 ## 留在设备上的数据
 

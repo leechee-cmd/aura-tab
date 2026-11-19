@@ -1,18 +1,18 @@
 ---
-id: leechee-goal
+id: lychee-goal
 type: goal-and-requirements
 status: draft
-title: Leechee — 产品目标与范围
+title: Lychee — 产品目标与范围
 tags: [chrome-extension, new-tab]
 ---
 
-# Leechee — 产品目标与范围
+# Lychee — 产品目标与范围
 
 ## Goal
 
 把 Chrome / Edge 的新标签页变成一页可定制的桌面：一张壁纸，一个时钟，一个搜索框，一排常用入口。
 
-新标签页是打开频率最高的页面，浏览器自带的那一页只有搜索框。Leechee 取代它，让这一页承载桌面级的日常入口——壁纸轮换、快速链接、Dock、启动台——同时保持打开瞬间就能用。
+新标签页是打开频率最高的页面，浏览器自带的那一页只有搜索框。Lychee 取代它，让这一页承载桌面级的日常入口——壁纸轮换、快速链接、Dock、启动台——同时保持打开瞬间就能用。
 
 面向：日常在桌面浏览器里工作、习惯 macOS 观感的中英双语用户。UI 必须中英双语可用（简体、繁体、英文）。
 

@@ -3,16 +3,16 @@ import { idbCursorAll } from '../shared/storage.js';
 import { setStorageInChunks } from '../shared/storage.js';
 import { buildIconCacheKey, normalizeIconCacheUrl } from '../shared/text.js';
 const SCHEMA_VERSION = 1;
-const SCHEMA_NAME = 'leechee-webdav-backup';
+const SCHEMA_NAME = 'lychee-webdav-backup';
 const MAX_IN_MEMORY_BACKUP_SIZE = 500 * 1024 * 1024;
 const STAGING_DB_CONFIG = {
-    dbName: 'leechee-restore-staging',
+    dbName: 'lychee-restore-staging',
     storeName: 'files',
     version: 2
 };
 const IDB_CONFIGS = {
     iconCache: {
-        dbName: 'leechee-icon-cache',
+        dbName: 'lychee-icon-cache',
         storeName: 'icons',
         version: 2,
         keyPath: 'cacheKey',
@@ -24,7 +24,7 @@ const IDB_CONFIGS = {
         required: false
     },
     toolbarIcon: {
-        dbName: 'leechee-toolbar-icon',
+        dbName: 'lychee-toolbar-icon',
         storeName: 'icons',
         version: 1,
         keyPath: 'id',
@@ -32,7 +32,7 @@ const IDB_CONFIGS = {
         required: false
     },
     assets: {
-        dbName: 'leechee-assets',
+        dbName: 'lychee-assets',
         storeName: 'images',
         version: 1,
         keyPath: 'id',
@@ -46,7 +46,7 @@ const IDB_CONFIGS = {
         required: true
     },
     localFiles: {
-        dbName: 'leechee-local-files',
+        dbName: 'lychee-local-files',
         storeName: 'files',
         version: 1,
         keyPath: 'id',
@@ -253,7 +253,7 @@ export class BackupManager {
         const { onProgress } = options;
         const fileName = this._generateLocalFilename();
         const opfsRoot = await navigator.storage.getDirectory();
-        const tmpDir = await opfsRoot.getDirectoryHandle('leechee-tmp', { create: true });
+        const tmpDir = await opfsRoot.getDirectoryHandle('lychee-tmp', { create: true });
         const tmpFileName = `${Date.now()}_${Math.random().toString(16).slice(2)}_${fileName}`;
         const fileHandle = await tmpDir.getFileHandle(tmpFileName, { create: true });
         const writableStream = await fileHandle.createWritable();
@@ -461,7 +461,7 @@ export class BackupManager {
         const pad = (n) => String(n).padStart(2, '0');
         const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
         const time = `${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
-        return `leechee-backup_${date}_${time}.zip`;
+        return `lychee-backup_${date}_${time}.zip`;
     }
     async _getExistingDatabaseVersion(dbName) {
         if (typeof indexedDB?.databases !== 'function') {

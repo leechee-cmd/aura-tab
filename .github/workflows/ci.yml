@@ -74,5 +74,5 @@ jobs:
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
-        name: leechee-extension
-        path: leechee-*.zip
+        name: lychee-extension
+        path: lychee-*.zip
