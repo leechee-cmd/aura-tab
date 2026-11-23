@@ -73,7 +73,7 @@ Questions about this policy: open an issue at
 
 ---
 
-# Lychee Tab（荔枝）隐私政策
+# Lychee Tab 隐私政策
 
 _最后更新：2026-11-19_
 

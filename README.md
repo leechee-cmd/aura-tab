@@ -1,4 +1,4 @@
-# Lychee Tab · 荔枝
+# Lychee Tab
 
 [![Tests](https://github.com/leechee-cmd/aura-tab/actions/workflows/ci.yml/badge.svg)](https://github.com/leechee-cmd/aura-tab/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
